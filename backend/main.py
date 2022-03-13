@@ -49,12 +49,12 @@ class Datastore:
 
 
 @app.get("/get_subscriptions")
-async def get_items():
+async def get_subscriptions():
     subscription_str_list = [f"{subscription.name}" for subscription in Datastore.subscriptions]
     subscriptions_str = " | ".join(subscription_str_list)
     return {"message": f"The database contains: {subscriptions_str}"}
 
 
 @app.post("/post_subscription")
-async def post_item(subscription: Subscription):
+async def post_subscription(subscription: Subscription):
     Datastore.subscriptions.append(subscription)
