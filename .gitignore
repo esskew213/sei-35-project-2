@@ -24,3 +24,4 @@ venv/
 # Pycharm
 .idea
 .DS_STORE
+*/__pycache__
