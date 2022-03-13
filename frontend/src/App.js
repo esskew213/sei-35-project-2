@@ -1,13 +1,17 @@
 import './App.css';
+import applyCaseMiddleware from 'axios-case-converter';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import Form from './components/Form';
+
+const client = applyCaseMiddleware(axios.create());
+
 function App() {
 	const [ displayed, setDisplayed ] = useState('');
 	const updateDisplay = () => {
 		const makeAPICall = async () => {
-			const response = await axios.get('http://127.0.0.1:8000/get_items');
+			const response = await client.get('http://127.0.0.1:8000/get_subscriptions');
 			console.log(response.data);
 			setDisplayed(response.data.message);
 		};
@@ -15,16 +19,16 @@ function App() {
 	};
 	useEffect(updateDisplay, []);
 
-	const handleFormSubmit = async (texture, colour, type) => {
-		axios({
-			method: 'post',
-			url: 'http://127.0.0.1:8000/post_item',
-			data: {
-				texture,
-				colour,
-				type
-			}
-		});
+	const handleFormSubmit = async (name, startDate, renewalDate, recurrence, price) => {
+		console.log(name, startDate, renewalDate, recurrence, price);
+		const data = {
+			name,
+			startDate,
+			renewalDate,
+			recurrence,
+			price
+		};
+		await client.post('http://127.0.0.1:8000/post_subscription', data);
 		updateDisplay();
 	};
 	return (
