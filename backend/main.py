@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from auth import *
 
 app = FastAPI()
 
@@ -16,6 +17,11 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root():
-    return {"message": "I like jelly"}
+@app.get("/login")
+async def login():
+    return {"login_success": has_logged_in()}
+
+
+@app.get("/message_subjects")
+async def get_subjects():
+    return {"subjects": get_message_subjects()}
