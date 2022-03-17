@@ -1,18 +1,19 @@
 import './App.css';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import React, { useEffect, useState } from 'react';
+import { Button, Box } from '@mui/material';
+import React, { useState } from 'react';
 
 function App() {
 	const [ displayed, setDisplayed ] = useState('');
 
 	const makeAPICall = async () => {
-		const loginResponse = await axios.get('http://127.0.0.1:8000/login');
-		if (loginResponse.data.login_success === true) {
-			const subjectsResponse = await axios.get('http://127.0.0.1:8000/message_subjects');
-			console.log(subjectsResponse.data.subjects);
-			setDisplayed(subjectsResponse.data.subjects);
+		const credsResponse = await axios.get('http://127.0.0.1:8000/get_creds');
+		if (credsResponse.data) {
+			console.log(credsResponse.data);
+			// const subjectsResponse = await axios.get('http://127.0.0.1:8000/message_subjects');
+			// console.log(subjectsResponse.data.subjects);
+			// setDisplayed(subjectsResponse.data.subjects);
 		}
 	};
 
@@ -22,16 +23,19 @@ function App() {
 	};
 	return (
 		<div className="App">
-			<Button variant="contained" onClick={handleClick}>
-				CLICK ME
-			</Button>
-			{displayed ? (
+			<Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+				<Typography variant="h5">Subscription Manager</Typography>
+				<Button variant="contained" onClick={handleClick}>
+					LOGIN WITH GOOGLE
+				</Button>
+			</Box>
+			{/* {displayed ? (
 				displayed.map((subject, idx) => (
-					<Typography key={idx} variant="h5">
+					<Typography key={idx} variant="h6">
 						{subject}
 					</Typography>
 				))
-			) : null}
+			) : null} */}
 		</div>
 	);
 }

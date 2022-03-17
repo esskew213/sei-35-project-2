@@ -17,9 +17,9 @@ app.add_middleware(
 )
 
 
-@app.get("/login")
-async def login():
-    return {"login_success": has_logged_in()}
+@app.get("/get_creds")
+async def creds():
+    return get_creds();
 
 
 @app.get("/message_subjects")
