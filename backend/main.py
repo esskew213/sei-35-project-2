@@ -17,11 +17,31 @@ app.add_middleware(
 )
 
 
-@app.get("/get_creds")
-async def creds():
-    return get_creds();
+@app.get("/login")
+async def get_creds():
+    return login();
 
 
-@app.get("/message_subjects")
-async def get_subjects():
-    return {"subjects": get_message_subjects()}
+@app.get("/get_subs_on_login")
+async def get_subs():
+    return {"subjects": get_subs_on_login()}
+
+
+@app.get("/scan_gmail")
+async def scan():
+    return scan_gmail()
+
+
+@app.post("/save_new_subs")
+async def save_new():
+    return save_new_subs()
+
+
+@app.post("/edit_sub")
+async def edit():
+    return()
+
+
+@app.get("/delete_sub")
+async def delete():
+    return delete_sub()
