@@ -1,25 +1,17 @@
 import './App.css';
-import axios from 'axios';
-import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
-
+import SignIn from './pages/SignIn';
+import Home from './pages/Home';
+import LoggedInContextProvider from './context/LoggedIn.context';
+import { Routes, Route } from 'react-router-dom';
 function App() {
-	const [ displayed, setDisplayed ] = useState('');
-	useEffect(
-		() => {
-			const makeAPICall = async () => {
-				const response = await axios.get('http://127.0.0.1:8000');
-				console.log(response.data);
-				setDisplayed(response.data.message);
-			};
-			makeAPICall();
-		},
-		[ displayed ]
-	);
 	return (
-		<div className="App">
-			<Typography variant="h1">{displayed}</Typography>
-		</div>
+		<LoggedInContextProvider>
+			<Routes>
+				<Route index element={<SignIn />} />
+				<Route path="home" element={<Home />} />
+			</Routes>
+		</LoggedInContextProvider>
 	);
 }
 
