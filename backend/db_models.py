@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Date, Text, Float, Boolean, Integer, LargeBinary
+from sqlalchemy import Column, Date, Text, Float, Integer, LargeBinary
 from sqlalchemy import ForeignKey
 from sqlalchemy import String
 from sqlalchemy.orm import declarative_base, relationship
@@ -22,10 +22,10 @@ class Subscription(Base):
     __tablename__ = 'subscriptions'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    start_date = Column(Date, unique=True)
+    start_date = Column(Date)
     name = Column(Text)
-    price = Column(Float)
-    recurs = Column(Boolean, default=False)
+    price_in_dollars = Column(Float)
+    recurs = Column(String)
     user_id = Column(String, ForeignKey('users.id'))
 
     subscriber = relationship("User", back_populates="subscriptions")

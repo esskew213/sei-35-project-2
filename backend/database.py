@@ -50,4 +50,7 @@ def get_gmail_credentials(user: User):
 
 
 def get_subscriptions(user_id: str):
-    ...
+    session = SessionLocal()
+    subscriptions = session.query(Subscription).filter_by(user_id=user_id).all()
+    session.close()
+    return subscriptions

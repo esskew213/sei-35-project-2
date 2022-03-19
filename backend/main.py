@@ -2,8 +2,9 @@ from fastapi import FastAPI, Header
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 import jwt
-from database import user_exists
+import database as db
 from google_auth import handle_signup, create_user_from_jwt
+from io_models import SubscriptionIOModel
 
 app = FastAPI()
 
@@ -23,11 +24,34 @@ PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCg
 
 
 @app.get("/foo")
+#TODO rename from foo
 async def foo(authorization: Optional[str] = Header(None)):
     # NOT RECOMMENDED TO SKIP SIGNATURE VERIFICATION!!!
     decoded_jwt = jwt.decode(authorization, PUBLIC_KEY, algorithms=["RS256"], options={"verify_signature": False})
     user = create_user_from_jwt(decoded_jwt)
     user_id = user.id
-    if not user_exists(user):
+    if not db.user_exists(user):
         handle_signup(user)
     return {"user_id": user_id}
+
+
+@app.post("/add_subscription")
+async def add_subscription(subscription_input: SubscriptionIOModel, authorization: Optional[str] = Header(None)):
+    subscription = subscription_input.convert_to_orm_model(authorization)
+    db.write_subscription(subscriptions=[subscription])
+
+
+@app.get("/get_subscriptions")
+async def get_subscriptions(authorization: Optional[str] = Header(None)):
+
+    def convert_to_io_model(sub):
+        return SubscriptionIOModel(
+            start_date=sub.start_date,
+            name=sub.name,
+            price_in_dollars=sub.price_in_dollars,
+            recurs=sub.recurs
+        )
+
+    subscriptions = db.get_subscriptions(authorization)
+    subscriptions = [convert_to_io_model(subscription) for subscription in subscriptions]
+    return {"subscriptions": subscriptions}

@@ -3,7 +3,7 @@ import useInputState from '../hooks/setInputState';
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
-const NewSubscriptionForm = () => {
+const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
 	const [ startDate, handleStartDateChange, resetStartDate ] = useInputState('');
 	const [ name, handleNameChange, resetName ] = useInputState('');
 	const [ price, handlePriceChange, resetPrice ] = useInputState('');
@@ -12,12 +12,18 @@ const NewSubscriptionForm = () => {
 	const handleSubmit = async (evt) => {
 		evt.preventDefault();
 		console.log('SUBMITTED!');
-		const newSubscription = { startDate, name, price, recurs };
+		const priceInDollars = parseFloat(parseFloat(price).toFixed(2));
+		const newSubscription = { startDate, name, priceInDollars, recurs };
 		// using middleware to convert from camel case in javascript to snake case in python
 		const client = applyCaseMiddleware(axios.create());
 		await client.post('http://127.0.0.1:8000/add_subscription', newSubscription, {
-			headers: { Authorization: localStorage.token }
+			headers: { authorization: localStorage.token }
 		});
+		const response = await client.get('http://127.0.0.1:8000/get_subscriptions', {
+			headers: { authorization: localStorage.token }
+		});
+		console.log(response.data.subscriptions);
+		handleSubscriptionsUpdate(response.data.subscriptions);
 		resetStartDate();
 		resetPrice();
 		resetName();
@@ -27,6 +33,7 @@ const NewSubscriptionForm = () => {
 		<form>
 			<TextField label="Subscription name" value={name} onChange={handleNameChange} required />
 			<TextField label="Price" value={price} onChange={handlePriceChange} />
+			{/* TODO change to react date picker */}
 			<TextField label="Start date" value={startDate} onChange={handleStartDateChange} required />
 			<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} required>
 				<InputLabel>Recurs</InputLabel>
