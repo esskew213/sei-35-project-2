@@ -1,9 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from db_models import User, Base, Subscription
-from google.oauth2.credentials import Credentials
-
+from db_models import User, Base, Subscription, GmailCredentials
 
 DATABASE_URI = 'postgresql://sarahqtw:sei35project2@localhost/sei35project2'
 engine = create_engine(DATABASE_URI, echo=True)
@@ -13,6 +11,13 @@ SessionLocal = sessionmaker(bind=engine)
 def recreate_database():
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+
+
+def user_exists(user: User):
+    session = SessionLocal()
+    exists = session.query(User.id).filter_by(id=user.id).first() is not None
+    session.close()
+    return exists
 
 
 def write_user(user: User):
@@ -30,13 +35,19 @@ def write_subscription(subscriptions: list[Subscription]):
     session.close()
 
 
+def write_gmail_credentials(credentials: GmailCredentials):
+    session = SessionLocal()
+    session.add(credentials)
+    session.commit()
+    session.close()
+
+
+def get_gmail_credentials(user: User):
+    session = SessionLocal()
+    credentials = session.query(GmailCredentials.user_id).filter_by(id=user.id)
+    session.close()
+    return credentials
+
+
 def get_subscriptions(user_id: str):
-
-
-
-gmail_credentials_table: dict[str: Credentials] = {}
-users_table: dict[str: User] = {}
-database = {
-    "gmail_credentials_table": gmail_credentials_table,
-    "users_table": users_table
-}
+    ...
