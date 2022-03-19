@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.errors import HttpError
 
 from database import database
-from user import User
+from db_models import User
 
 SCOPES = [
     'https://www.googleapis.com/auth/gmail.readonly',
