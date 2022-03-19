@@ -16,6 +16,10 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root():
-    return {"message": "I like jelly"}
+@app.get("/signup")
+async def signup():
+    handle_signup()
+
+@app.get("/login")
+async def login():
+    ...
