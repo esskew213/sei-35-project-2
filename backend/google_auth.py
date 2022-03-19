@@ -54,11 +54,8 @@ def get_user(credentials: Credentials) -> User:
     except HttpError as e:
         logging.error('An error occurred: %s', e)
 
+    user_id = user_info["resourceName"][7:]
     name = user_info["names"][0]["displayName"]
     email = user_info["emailAddresses"][0]["value"]
     photo_url = user_info["photos"][0]["url"]
-    return User(name=name, email=email, photo_url=photo_url)
-
-
-handle_signup()
-print(database)
+    return User(id=user_id, name=name, email=email, photo_url=photo_url)

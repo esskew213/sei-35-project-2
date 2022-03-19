@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from google_auth import handle_signup
+
 app = FastAPI()
 
 origins = [
@@ -19,7 +21,3 @@ app.add_middleware(
 @app.get("/signup")
 async def signup():
     handle_signup()
-
-@app.get("/login")
-async def login():
-    ...
