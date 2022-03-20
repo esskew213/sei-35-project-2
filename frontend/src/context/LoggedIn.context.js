@@ -9,7 +9,6 @@ const LoggedInContextProvider = (props) => {
 	const [ userInfo, setUserInfo ] = useState({ name: 'Anonymous Badger', photoUrl: '' });
 	const getUserInfo = async () => {
 		const client = applyCaseMiddleware(axios.create());
-		console.log('sent in getUserInfo', localStorage.token);
 		const response = await client.get('http://127.0.0.1:8000/get_user_info', {
 			headers: { authorization: localStorage.token }
 		});
