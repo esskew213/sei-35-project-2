@@ -16,8 +16,8 @@ import { useContext } from 'react';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { SubscriptionsContext } from '../context/Subscriptions.context';
-const NewSubscriptionForm = ({ handleCloseModal }) => {
-	const { handleSubscriptionsUpdate } = useContext(SubscriptionsContext);
+const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) => {
+	const { getSubscriptions } = useContext(SubscriptionsContext);
 
 	// using a custom hook for all input fields EXCEPT date, which uses react date picker
 	const [ name, handleNameChange, resetName ] = useInputState('');
@@ -35,17 +35,21 @@ const NewSubscriptionForm = ({ handleCloseModal }) => {
 		console.log(dateStarted);
 		const priceInDollars = parseFloat(price).toFixed(2);
 		const newSubscription = { dateStarted, name, priceInDollars, recurs };
-		console.log(newSubscription);
+
 		// using middleware to convert from camel case in javascript to snake case in python
 		const client = applyCaseMiddleware(axios.create());
-		await client.post('http://127.0.0.1:8000/add_subscription', newSubscription, {
-			headers: { authorization: localStorage.token }
-		});
-		const response = await client.get('http://127.0.0.1:8000/get_subscriptions', {
-			headers: { authorization: localStorage.token }
-		});
-		console.log(response.data.subscriptions);
-		handleSubscriptionsUpdate(response.data.subscriptions);
+		if (subscription) {
+			newSubscription.id = subscription.id;
+			console.log(newSubscription);
+			await client.post('http://127.0.0.1:8000/edit_subscription', newSubscription, {
+				headers: { authorization: localStorage.token }
+			});
+		} else {
+			await client.post('http://127.0.0.1:8000/add_subscription', newSubscription, {
+				headers: { authorization: localStorage.token }
+			});
+		}
+		await getSubscriptions();
 		if (handleCloseModal) {
 			handleCloseModal();
 		}

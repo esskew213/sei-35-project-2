@@ -2,7 +2,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import React, { useState, useContext } from 'react';
 import NewSubscriptionForm from './NewSubscriptionForm';
-const FormModal = ({ modalOpen, handleCloseModal }) => {
+const FormModal = ({ modalOpen, handleCloseModal, subscription }) => {
 	const style = {
 		position: 'absolute',
 		top: '50%',
@@ -25,7 +25,7 @@ const FormModal = ({ modalOpen, handleCloseModal }) => {
 				keepMounted
 			>
 				<Box sx={style}>
-					<NewSubscriptionForm handleCloseModal={handleCloseModal} />
+					<NewSubscriptionForm handleCloseModal={handleCloseModal} subscription={subscription} />
 				</Box>
 			</Modal>
 		</div>

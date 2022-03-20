@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Box from '@mui/material/Box';
@@ -8,13 +8,26 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FormModal from './FormModal';
+import axios from 'axios';
+import applyCaseMiddleware from 'axios-case-converter';
+import { SubscriptionsContext } from '../context/Subscriptions.context';
 const SubscriptionItem = ({ subscription }) => {
+	const { getSubscriptions } = useContext(SubscriptionsContext);
 	const [ modalOpen, setModalOpen ] = useState(false);
 	const handleOpenModal = () => {
 		setModalOpen(true);
 	};
 	const handleCloseModal = () => {
 		setModalOpen(false);
+	};
+	//TODO: convert delete to an "Are you sure?" modal
+	const handleDelete = async () => {
+		const client = applyCaseMiddleware(axios.create());
+		await client.delete('http://127.0.0.1:8000/delete_subscription', {
+			params: { subscriptionId: subscription.id },
+			headers: { authorization: localStorage.token }
+		});
+		await getSubscriptions();
 	};
 	return (
 		<Card sx={{ width: 400 }} raised>
@@ -32,11 +45,11 @@ const SubscriptionItem = ({ subscription }) => {
 				<IconButton aria-label="edit" onClick={handleOpenModal}>
 					<ModeEditOutlineOutlinedIcon />
 				</IconButton>
-				<IconButton aria-label="delete">
+				<IconButton aria-label="delete" onClick={handleDelete}>
 					<DeleteOutlineOutlinedIcon />
 				</IconButton>
 			</CardActions>
-			<FormModal modalOpen={modalOpen} handleCloseModal={handleCloseModal} />
+			<FormModal modalOpen={modalOpen} handleCloseModal={handleCloseModal} subscription={subscription} />
 		</Card>
 	);
 };

@@ -54,3 +54,17 @@ def get_subscriptions(user_id: str):
     subscriptions = session.query(Subscription).filter_by(user_id=user_id).all()
     session.close()
     return subscriptions
+
+
+def edit_subscription(subscription: Subscription):
+    session = SessionLocal()
+    session.merge(subscription)
+    session.commit()
+    session.close()
+
+
+def delete_subscription(subscription_id: int):
+    session = SessionLocal()
+    session.query(Subscription).filter_by(id=subscription_id).delete()
+    session.commit()
+    session.close()

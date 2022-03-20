@@ -48,3 +48,14 @@ async def get_subscriptions(authorization: Optional[str] = Header(None)):
     subscriptions = db.get_subscriptions(user_id=authorization)
     subscriptions = [convert_to_io_model(subscription=subscription) for subscription in subscriptions]
     return {"subscriptions": subscriptions}
+
+
+@app.post("/edit_subscription")
+async def edit_subscription(subscription_input: SubscriptionIOModel, authorization: Optional[str] = Header(None)):
+    subscription = convert_to_orm_model(s_io_model=subscription_input, user_id=authorization)
+    db.edit_subscription(subscription=subscription)
+
+
+@app.delete("/delete_subscription")
+async def delete_subscription(subscription_id: int, authorization: Optional[str] = Header(None)):
+    db.delete_subscription(subscription_id=subscription_id)
