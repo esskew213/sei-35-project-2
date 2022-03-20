@@ -3,7 +3,7 @@ from datetime import date
 from fastapi import FastAPI, Header
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-import jwt
+
 import database as db
 from conversion_util import convert_subscription_io_to_orm_model, convert_subscription_to_io_model, \
     convert_user_to_io_model
