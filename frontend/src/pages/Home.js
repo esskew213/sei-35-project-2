@@ -14,16 +14,17 @@ const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
 	const [ isLoggedIn, setIsLoggedIn ] = useContext(IsLoggedInContext);
-	const { setSubscriptions } = useContext(SubscriptionsContext);
+	const { subscriptions, setSubscriptions } = useContext(SubscriptionsContext);
 	useEffect(() => {
-		const get_subscriptions = async () => {
+		const getSubscriptions = async () => {
 			const client = applyCaseMiddleware(axios.create());
 			const response = await client.get('http://127.0.0.1:8000/get_subscriptions', {
 				headers: { authorization: localStorage.token }
 			});
 			setSubscriptions(response.data.subscriptions);
 		};
-		get_subscriptions();
+		getSubscriptions();
+		console.log(subscriptions);
 	}, []);
 
 	const logout = () => {

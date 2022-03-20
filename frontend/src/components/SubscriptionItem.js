@@ -24,6 +24,7 @@ const SubscriptionItem = ({ subscription }) => {
 				<Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
 					<Typography variant="body2">Started on: {subscription.dateStarted}</Typography>
 					<Typography variant="body2">Recurs: {subscription.recurs}</Typography>
+					<Typography variant="body2">Next billing on: {subscription.nextBillingDate}</Typography>
 					<Typography variant="body2">Cost: {subscription.priceInDollars}</Typography>
 				</Box>
 			</CardContent>
