@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 import jwt
 import database as db
-from conversion_util import convert_to_orm_model, convert_to_io_model
+from conversion_util import convert_subscription_io_to_orm_model, convert_subscription_to_io_model, \
+    convert_user_to_io_model
 from google_auth import handle_signup, create_user_from_jwt
 from io_models import SubscriptionIOModel
 
@@ -38,24 +39,29 @@ async def foo(authorization: Optional[str] = Header(None)):
 
 @app.post("/add_subscription")
 async def add_subscription(subscription_input: SubscriptionIOModel, authorization: Optional[str] = Header(None)):
-    subscription = convert_to_orm_model(s_io_model=subscription_input, user_id=authorization)
+    subscription = convert_subscription_io_to_orm_model(s_io_model=subscription_input, user_id=authorization)
     db.write_subscription(subscriptions=[subscription])
 
 
 @app.get("/get_subscriptions")
 async def get_subscriptions(authorization: Optional[str] = Header(None)):
-
     subscriptions = db.get_subscriptions(user_id=authorization)
-    subscriptions = [convert_to_io_model(subscription=subscription) for subscription in subscriptions]
+    subscriptions = [convert_subscription_to_io_model(subscription=subscription) for subscription in subscriptions]
     return {"subscriptions": subscriptions}
 
 
 @app.post("/edit_subscription")
 async def edit_subscription(subscription_input: SubscriptionIOModel, authorization: Optional[str] = Header(None)):
-    subscription = convert_to_orm_model(s_io_model=subscription_input, user_id=authorization)
+    subscription = convert_subscription_io_to_orm_model(s_io_model=subscription_input, user_id=authorization)
     db.edit_subscription(subscription=subscription)
 
 
 @app.delete("/delete_subscription")
 async def delete_subscription(subscription_id: int, authorization: Optional[str] = Header(None)):
     db.delete_subscription(subscription_id=subscription_id)
+
+
+@app.get("/get_user_info")
+async def get_user_info(authorization: Optional[str] = Header(None)):
+    user = db.get_user(user_id=authorization)
+    return convert_user_to_io_model(user)

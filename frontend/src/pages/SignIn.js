@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
-	const [ isLoggedIn, setIsLoggedIn ] = useContext(IsLoggedInContext);
+	const { setIsLoggedIn } = useContext(IsLoggedInContext);
 	const navigate = useNavigate();
 
 	const clientID = clientGoogle.web.client_id;

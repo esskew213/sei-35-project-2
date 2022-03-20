@@ -2,7 +2,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import React, { useState, useContext } from 'react';
 import NewSubscriptionForm from './NewSubscriptionForm';
-const FormModal = ({ modalOpen, handleCloseModal, subscription }) => {
+const FormModal = ({ modalOpen, handleCloseModal, subscription = null }) => {
 	const style = {
 		position: 'absolute',
 		top: '50%',

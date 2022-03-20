@@ -17,6 +17,7 @@ const SubscriptionsContextProvider = (props) => {
 		});
 		setSubscriptions(response.data.subscriptions);
 	};
+
 	useEffect(() => {
 		getSubscriptions();
 	}, []);

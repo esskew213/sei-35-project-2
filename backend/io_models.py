@@ -53,3 +53,9 @@ def next_billing_date(date_started: date, recurs: RecursFreq) -> Optional[date]:
         raise ValueError("Unrecognised enum value for RecursFreq")
 
     return delta_to_bill + date_started
+
+
+class UserIOModel(BaseModel):
+    id: constr(min_length=1)
+    name: constr(min_length=1)
+    photo_url: constr(min_length=1)
