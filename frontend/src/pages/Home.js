@@ -12,7 +12,6 @@ const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
 	const { userInfo, setUserInfo, setIsLoggedIn } = useContext(IsLoggedInContext);
-	console.log(userInfo);
 	const logout = () => {
 		setIsLoggedIn(false);
 		localStorage.clear();

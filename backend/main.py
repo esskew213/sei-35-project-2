@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import FastAPI, Header
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
@@ -6,7 +8,7 @@ import database as db
 from conversion_util import convert_subscription_io_to_orm_model, convert_subscription_to_io_model, \
     convert_user_to_io_model
 from google_auth import handle_signup, create_user_from_jwt
-from io_models import SubscriptionIOModel, AddSubscriptionInput
+from io_models import SubscriptionIOModel, SubsListIOModel, RecursFreq
 
 app = FastAPI()
 
@@ -37,7 +39,7 @@ async def sign_in(authorization: Optional[str] = Header(None)):
 
 
 @app.post("/add_subscriptions")
-async def add_subscriptions(endpoint_input: AddSubscriptionInput, authorization: Optional[str] = Header(None)):
+async def add_subscriptions(endpoint_input: SubsListIOModel, authorization: Optional[str] = Header(None)):
     subscriptions = [
         convert_subscription_io_to_orm_model(s_io_model=subscription, user_id=authorization)
         for subscription in endpoint_input.subscriptions
@@ -67,3 +69,21 @@ async def delete_subscription(subscription_id: int, authorization: Optional[str]
 async def get_user_info(authorization: Optional[str] = Header(None)):
     user = db.get_user(user_id=authorization)
     return convert_user_to_io_model(user)
+
+
+@app.get("/fetch_new_subscriptions")
+async def fetch_new_subscriptions(authorization: Optional[str] = Header(None)):
+    return SubsListIOModel(subscriptions=[
+        SubscriptionIOModel(
+            date_started=date(year=2020, month=2, day=29),
+            name="First email scan",
+            price_in_dollars=49.90,
+            recurs=RecursFreq.YEARLY
+        ),
+        SubscriptionIOModel(
+            date_started=date(year=2021, month=3, day=31),
+            name="Second email scan",
+            price_in_dollars=19.90,
+            recurs=RecursFreq.MONTHLY
+        )
+    ])

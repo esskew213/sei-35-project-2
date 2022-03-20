@@ -55,7 +55,7 @@ def next_billing_date(date_started: date, recurs: RecursFreq) -> Optional[date]:
     return delta_to_bill + date_started
 
 
-class AddSubscriptionInput(BaseModel):
+class SubsListIOModel(BaseModel):
     subscriptions: list[SubscriptionIOModel]
 
 
