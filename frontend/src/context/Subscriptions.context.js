@@ -18,9 +18,6 @@ const SubscriptionsContextProvider = (props) => {
 		setSubscriptions(response.data.subscriptions);
 	};
 
-	useEffect(() => {
-		getSubscriptions();
-	}, []);
 	return (
 		<SubscriptionsContext.Provider
 			value={{ subscriptions, setSubscriptions, getSubscriptions, handleSubscriptionsUpdate }}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Typography, Avatar, Box, Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { clientGoogle } from '../clientGoogle';
@@ -11,11 +11,13 @@ import SubscriptionsList from '../components/SubscriptionsList';
 const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
-	const { userInfo, setIsLoggedIn } = useContext(IsLoggedInContext);
+	const { userInfo, setUserInfo, setIsLoggedIn } = useContext(IsLoggedInContext);
+	console.log(userInfo);
 	const logout = () => {
 		setIsLoggedIn(false);
 		localStorage.clear();
 		navigate('/');
+		setUserInfo({ name: 'Anonymous Badger', photoUrl: '' });
 	};
 
 	return (

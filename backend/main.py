@@ -6,7 +6,7 @@ import database as db
 from conversion_util import convert_subscription_io_to_orm_model, convert_subscription_to_io_model, \
     convert_user_to_io_model
 from google_auth import handle_signup, create_user_from_jwt
-from io_models import SubscriptionIOModel
+from io_models import SubscriptionIOModel, AddSubscriptionInput
 
 app = FastAPI()
 
@@ -36,10 +36,13 @@ async def sign_in(authorization: Optional[str] = Header(None)):
     return {"user_id": user_id}
 
 
-@app.post("/add_subscription")
-async def add_subscription(subscription_input: SubscriptionIOModel, authorization: Optional[str] = Header(None)):
-    subscription = convert_subscription_io_to_orm_model(s_io_model=subscription_input, user_id=authorization)
-    db.write_subscription(subscriptions=[subscription])
+@app.post("/add_subscriptions")
+async def add_subscriptions(endpoint_input: AddSubscriptionInput, authorization: Optional[str] = Header(None)):
+    subscriptions = [
+        convert_subscription_io_to_orm_model(s_io_model=subscription, user_id=authorization)
+        for subscription in endpoint_input.subscriptions
+    ]
+    db.write_subscription(subscriptions=subscriptions)
 
 
 @app.get("/get_subscriptions")

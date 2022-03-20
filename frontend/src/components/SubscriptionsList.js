@@ -1,9 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import SubscriptionItem from './SubscriptionItem';
 import { Grid } from '@mui/material';
 import { SubscriptionsContext } from '../context/Subscriptions.context';
 const SubscriptionsList = () => {
-	const { subscriptions } = useContext(SubscriptionsContext);
+	const { subscriptions, getSubscriptions } = useContext(SubscriptionsContext);
+	useEffect(() => {
+		getSubscriptions();
+	}, []);
 	console.log(subscriptions);
 	return (
 		<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">

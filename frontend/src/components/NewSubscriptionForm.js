@@ -45,9 +45,14 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 				headers: { authorization: localStorage.token }
 			});
 		} else {
-			await client.post('http://127.0.0.1:8000/add_subscription', newSubscription, {
-				headers: { authorization: localStorage.token }
-			});
+			// sending in as a list in case there is more than one subscription
+			await client.post(
+				'http://127.0.0.1:8000/add_subscriptions',
+				{ subscriptions: [ newSubscription ] },
+				{
+					headers: { authorization: localStorage.token }
+				}
+			);
 		}
 		await getSubscriptions();
 		if (handleCloseModal) {

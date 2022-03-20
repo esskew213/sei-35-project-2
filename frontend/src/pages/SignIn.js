@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
-	const { setIsLoggedIn } = useContext(IsLoggedInContext);
+	const { setIsLoggedIn, getUserInfo } = useContext(IsLoggedInContext);
 	const navigate = useNavigate();
 
 	const clientID = clientGoogle.web.client_id;
@@ -17,7 +17,9 @@ const SignIn = () => {
 		});
 		// Not safe, look into using closure variables / service workers at a later date
 		localStorage.setItem('token', tokenAsJSON.data.user_id);
+		console.log('savedOnSignIn', localStorage.token);
 		setIsLoggedIn(true);
+		getUserInfo();
 		navigate(`/home`);
 	};
 	const failureResponse = (response) => {
