@@ -6,18 +6,17 @@ import { Typography } from '@mui/material';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
-	const [ isLoggedIn, setIsLoggedIn ] = useContext(IsLoggedInContext);
+	const { setIsLoggedIn } = useContext(IsLoggedInContext);
 	const navigate = useNavigate();
 
 	const clientID = clientGoogle.web.client_id;
 	const sendTokenToServer = async (response) => {
 		console.log(response.tokenId);
-		const tokenAsJSON = await axios.get('http://127.0.0.1:8000/foo', {
+		const tokenAsJSON = await axios.get('http://127.0.0.1:8000/sign_in', {
 			headers: { authorization: response.tokenId }
 		});
 		// Not safe, look into using closure variables / service workers at a later date
 		localStorage.setItem('token', tokenAsJSON.data.user_id);
-		console.log(`${tokenAsJSON.data.user_id}`);
 		setIsLoggedIn(true);
 		navigate(`/home`);
 	};

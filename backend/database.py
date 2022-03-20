@@ -13,11 +13,15 @@ def recreate_database():
     Base.metadata.create_all(engine)
 
 
-def user_exists(user: User):
+def get_user(user_id: str):
     session = SessionLocal()
-    exists = session.query(User.id).filter_by(id=user.id).first() is not None
+    user = session.query(User).filter_by(id=user_id).first()
     session.close()
-    return exists
+    return user
+
+
+def user_exists(user: User):
+    return get_user(user.id) is not None
 
 
 def write_user(user: User):
@@ -54,3 +58,17 @@ def get_subscriptions(user_id: str):
     subscriptions = session.query(Subscription).filter_by(user_id=user_id).all()
     session.close()
     return subscriptions
+
+
+def edit_subscription(subscription: Subscription):
+    session = SessionLocal()
+    session.merge(subscription)
+    session.commit()
+    session.close()
+
+
+def delete_subscription(subscription_id: int):
+    session = SessionLocal()
+    session.query(Subscription).filter_by(id=subscription_id).delete()
+    session.commit()
+    session.close()

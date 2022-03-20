@@ -1,35 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Paper, Typography } from '@mui/material';
+import React, { useContext } from 'react';
+import { Typography, Avatar, Box, Button } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { clientGoogle } from '../clientGoogle';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { GoogleLogout } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import NewSubscriptionForm from '../components/NewSubscriptionForm';
 import SubscriptionsList from '../components/SubscriptionsList';
-import axios from 'axios';
-import applyCaseMiddleware from 'axios-case-converter';
 
 const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
-	const [ isLoggedIn, setIsLoggedIn ] = useContext(IsLoggedInContext);
-	const [ subscriptions, setSubscriptions ] = useState([]);
-
-	useEffect(() => {
-		const get_subscriptions = async () => {
-			const client = applyCaseMiddleware(axios.create());
-			const response = await client.get('http://127.0.0.1:8000/get_subscriptions', {
-				headers: { authorization: localStorage.token }
-			});
-			setSubscriptions(response.data.subscriptions);
-		};
-		get_subscriptions();
-	}, []);
-
-	const handleSubscriptionsUpdate = (subscriptions) => {
-		setSubscriptions(subscriptions);
-	};
-
+	const { userInfo, setIsLoggedIn } = useContext(IsLoggedInContext);
 	const logout = () => {
 		setIsLoggedIn(false);
 		localStorage.clear();
@@ -37,12 +19,18 @@ const Home = () => {
 	};
 
 	return (
-		<Paper>
-			<Typography variant="h5">Home Page</Typography>
+		<React.Fragment>
+			<Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'baseline' }}>
+				<Avatar alt={userInfo.name} src={userInfo.photoUrl} sx={{ width: 56, height: 56 }} />
+				<Typography variant="h4">Welcome back, {userInfo.name}.</Typography>
+			</Box>
 			<GoogleLogout clientId={clientID} buttonText="Logout" onLogoutSuccess={logout} />
-			<NewSubscriptionForm handleSubscriptionsUpdate={handleSubscriptionsUpdate} />
-			<SubscriptionsList subscriptions={subscriptions} />
-		</Paper>
+			<NewSubscriptionForm />
+			<Button variant="contained" endIcon={<AddCircleIcon />}>
+				ADD NEW SUBSCRIPTION
+			</Button>
+			<SubscriptionsList />
+		</React.Fragment>
 	);
 };
 

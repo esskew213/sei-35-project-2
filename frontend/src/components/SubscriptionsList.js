@@ -1,18 +1,18 @@
-import React from 'react';
-
-import { Typography } from '@mui/material';
-const SubscriptionsList = ({ subscriptions }) => {
+import React, { useContext } from 'react';
+import SubscriptionItem from './SubscriptionItem';
+import { Grid } from '@mui/material';
+import { SubscriptionsContext } from '../context/Subscriptions.context';
+const SubscriptionsList = () => {
+	const { subscriptions } = useContext(SubscriptionsContext);
+	console.log(subscriptions);
 	return (
-		<React.Fragment>
-			{subscriptions.map((subscription, idx) => {
-				return (
-					<Typography key={idx} variant="body2">
-						{subscription.name} | Started on {subscription.startDate} | Costs ${subscription.priceInDollars}{' '}
-						| Recurs {subscription.recurs}
-					</Typography>
-				);
-			})}
-		</React.Fragment>
+		<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
+			{subscriptions.map((subscription, idx) => (
+				<Grid item xl={6} lg={6} md={8} sm={8} xs={12} key={idx}>
+					<SubscriptionItem subscription={subscription} />
+				</Grid>
+			))}
+		</Grid>
 	);
 };
 
