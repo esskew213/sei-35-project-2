@@ -5,14 +5,14 @@ from db_models import Subscription
 
 
 class SubscriptionIOModel(BaseModel):
-    start_date: date
+    date_started: date
     name: str
     price_in_dollars: float
     recurs: str
 
     def convert_to_orm_model(self, user_id):
         return Subscription(
-            start_date=self.start_date,
+            date_started=self.date_started,
             name=self.name,
             price_in_dollars=self.price_in_dollars,
             recurs=self.recurs,

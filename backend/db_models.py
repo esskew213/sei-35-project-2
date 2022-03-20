@@ -22,7 +22,7 @@ class Subscription(Base):
     __tablename__ = 'subscriptions'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    start_date = Column(Date)
+    date_started = Column(Date)
     name = Column(Text)
     price_in_dollars = Column(Float)
     recurs = Column(String)

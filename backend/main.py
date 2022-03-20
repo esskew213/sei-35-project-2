@@ -46,7 +46,7 @@ async def get_subscriptions(authorization: Optional[str] = Header(None)):
 
     def convert_to_io_model(sub):
         return SubscriptionIOModel(
-            start_date=sub.start_date,
+            date_started=sub.date_started,
             name=sub.name,
             price_in_dollars=sub.price_in_dollars,
             recurs=sub.recurs
