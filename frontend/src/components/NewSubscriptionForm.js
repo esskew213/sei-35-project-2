@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import useInputState from '../hooks/setInputState';
-import { TextField, FormControl, InputLabel, Select, MenuItem, Button, InputAdornment } from '@mui/material';
+import {
+	TextField,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	Button,
+	InputAdornment,
+	IconButton
+} from '@mui/material';
+
 import TableDatePicker from './TableDatePicker';
+import { useContext } from 'react';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
-const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
+import { SubscriptionsContext } from '../context/Subscriptions.context';
+const NewSubscriptionForm = ({ handleCloseModal }) => {
+	const { handleSubscriptionsUpdate } = useContext(SubscriptionsContext);
+
 	// using a custom hook for all input fields EXCEPT date, which uses react date picker
 	const [ name, handleNameChange, resetName ] = useInputState('');
 	const [ price, handlePriceChange, resetPrice ] = useInputState('');
@@ -20,7 +34,6 @@ const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
 		const dateStarted = startDate.toISOString().split('T')[0];
 		console.log(dateStarted);
 		const priceInDollars = parseFloat(price).toFixed(2);
-
 		const newSubscription = { dateStarted, name, priceInDollars, recurs };
 		console.log(newSubscription);
 		// using middleware to convert from camel case in javascript to snake case in python
@@ -33,6 +46,9 @@ const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
 		});
 		console.log(response.data.subscriptions);
 		handleSubscriptionsUpdate(response.data.subscriptions);
+		if (handleCloseModal) {
+			handleCloseModal();
+		}
 		setStartDate(new Date());
 		resetPrice();
 		resetName();
@@ -60,6 +76,7 @@ const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
 					value={price}
 					onChange={handlePriceChange}
 					min="0"
+					required
 					step="0.01"
 					InputProps={{
 						startAdornment: <InputAdornment position="start">$</InputAdornment>,
@@ -68,8 +85,6 @@ const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
 				/>
 			</FormControl>
 
-			{/* TODO change to react date picker
-			<TextField label="Start date" value={startDate} onChange={handleStartDateChange} required /> */}
 			<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} required>
 				<InputLabel htmlFor="recurs">Recurs</InputLabel>
 				<Select id="recurs" value={recurs} onChange={handleRecursChange} label="Recurs">
@@ -83,7 +98,7 @@ const NewSubscriptionForm = ({ handleSubscriptionsUpdate }) => {
 			</FormControl>
 			<TableDatePicker date={startDate} onInputChange={handleStartDateChange} />
 			<Button onClick={handleSubmit} variant="contained">
-				Add subscription
+				SUBMIT
 			</Button>
 		</form>
 	);

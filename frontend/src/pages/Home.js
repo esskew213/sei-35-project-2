@@ -8,13 +8,13 @@ import NewSubscriptionForm from '../components/NewSubscriptionForm';
 import SubscriptionsList from '../components/SubscriptionsList';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
+import { SubscriptionsContext } from '../context/Subscriptions.context';
 
 const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
 	const [ isLoggedIn, setIsLoggedIn ] = useContext(IsLoggedInContext);
-	const [ subscriptions, setSubscriptions ] = useState([]);
-
+	const { setSubscriptions } = useContext(SubscriptionsContext);
 	useEffect(() => {
 		const get_subscriptions = async () => {
 			const client = applyCaseMiddleware(axios.create());
@@ -26,10 +26,6 @@ const Home = () => {
 		get_subscriptions();
 	}, []);
 
-	const handleSubscriptionsUpdate = (subscriptions) => {
-		setSubscriptions(subscriptions);
-	};
-
 	const logout = () => {
 		setIsLoggedIn(false);
 		localStorage.clear();
@@ -37,12 +33,12 @@ const Home = () => {
 	};
 
 	return (
-		<Paper>
+		<React.Fragment>
 			<Typography variant="h5">Home Page</Typography>
 			<GoogleLogout clientId={clientID} buttonText="Logout" onLogoutSuccess={logout} />
-			<NewSubscriptionForm handleSubscriptionsUpdate={handleSubscriptionsUpdate} />
-			<SubscriptionsList subscriptions={subscriptions} />
-		</Paper>
+			<NewSubscriptionForm />
+			<SubscriptionsList />
+		</React.Fragment>
 	);
 };
 
