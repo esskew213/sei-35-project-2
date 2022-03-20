@@ -54,3 +54,5 @@ def get_subscriptions(user_id: str):
     subscriptions = session.query(Subscription).filter_by(user_id=user_id).all()
     session.close()
     return subscriptions
+
+recreate_database()
