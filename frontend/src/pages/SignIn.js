@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { clientGoogle } from '../clientGoogle';
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
-import { Typography } from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
@@ -31,16 +31,47 @@ const SignIn = () => {
 		console.log(response);
 	};
 	return (
-		<React.Fragment>
-			<Typography variant="h4">LOG IN WITH GOOGLE</Typography>
-			<GoogleLogin
-				clientId={clientID}
-				buttonText="Login with Google"
-				onSuccess={sendTokenToServer}
-				onFailure={failureResponse}
-				cookiePolicy={'single_host_origin'}
+		<Grid
+			container
+			sx={{ height: '100vh', width: '100%' }}
+			spacing={2}
+			direction="row"
+			justifyContent="center"
+			alignItems="space-between"
+		>
+			<Grid item md={4} style={{ backgroundColor: 'cornflowerblue' }}>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						justifyContent: 'center',
+						height: '100%',
+						textAlign: 'center'
+					}}
+				>
+					<Typography color="white" variant="h5" gutterBottom>
+						Let's get started
+					</Typography>
+					<GoogleLogin
+						clientId={clientID}
+						buttonText="Login with Google"
+						onSuccess={sendTokenToServer}
+						onFailure={failureResponse}
+						cookiePolicy={'single_host_origin'}
+					/>
+				</Box>
+			</Grid>
+			<Grid
+				item
+				md={8}
+				style={{
+					backgroundImage: `url("https://images.unsplash.com/photo-1634733988138-bf2c3a2a13fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGJpbGxzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60")`,
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat'
+				}}
 			/>
-		</React.Fragment>
+		</Grid>
 	);
 };
 
