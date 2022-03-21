@@ -4,14 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import SubscriptionsContextProvider from './context/Subscriptions.context';
+import LoggedInContextProvider from './context/LoggedIn.context';
 
 ReactDOM.render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<Routes>
-				<Route path="/*" element={<App />} />
-			</Routes>
-		</BrowserRouter>
+		<LoggedInContextProvider>
+			<SubscriptionsContextProvider>
+				<BrowserRouter>
+					<Routes>
+						<Route path="/*" element={<App />} />
+					</Routes>
+				</BrowserRouter>
+			</SubscriptionsContextProvider>
+		</LoggedInContextProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
 );

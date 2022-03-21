@@ -89,5 +89,11 @@ async def fetch_new_subscriptions(authorization: Optional[str] = Header(None)):
             name="Second email scan",
             price_in_dollars=19.90,
             recurs=RecursFreq.MONTHLY
+        ),
+        SubscriptionIOModel(
+            date_started=date(year=2019, month=1, day=1),
+            name="Third email scan",
+            price_in_dollars=33.33,
+            recurs=RecursFreq.NEVER
         )
     ])

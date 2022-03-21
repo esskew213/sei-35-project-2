@@ -7,6 +7,7 @@ export const IsLoggedInContext = createContext();
 const LoggedInContextProvider = (props) => {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 	const [ userInfo, setUserInfo ] = useState({ name: 'Anonymous Badger', photoUrl: '' });
+
 	const getUserInfo = async () => {
 		const client = applyCaseMiddleware(axios.create());
 		const response = await client.get('http://127.0.0.1:8000/get_user_info', {

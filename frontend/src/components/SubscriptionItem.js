@@ -30,7 +30,7 @@ const SubscriptionItem = ({ subscription }) => {
 		await getSubscriptions();
 	};
 	return (
-		<Card sx={{ width: 400 }} raised>
+		<Card sx={{ width: 600 }} raised>
 			<CardContent>
 				<Typography variant="h5">{subscription.name}</Typography>
 

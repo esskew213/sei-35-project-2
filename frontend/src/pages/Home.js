@@ -16,7 +16,6 @@ const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
 	const { userInfo, setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
-	const { getSubscriptions } = useContext(SubscriptionsContext);
 	const logout = () => {
 		setIsLoggedIn(false);
 		localStorage.clear();
@@ -24,19 +23,7 @@ const Home = () => {
 		setUserInfo({ name: 'Anonymous Badger', photoUrl: '' });
 	};
 	const handleNewScan = async () => {
-		const client = applyCaseMiddleware(axios.create());
-		const response = await client.get('http://127.0.0.1:8000/fetch_new_subscriptions', {
-			headers: { authorization: localStorage.token }
-		});
-		await client.post(
-			'http://127.0.0.1:8000/add_subscriptions',
-			{ subscriptions: response.data.subscriptions },
-			{
-				headers: { authorization: localStorage.token }
-			}
-		);
-		getSubscriptions();
-		console.log(response.data.subscriptions);
+		navigate('/scan_results');
 	};
 	return (
 		<React.Fragment>

@@ -24,15 +24,19 @@ def get_message_subjects(user: User):
             service.users().messages().get(
                 userId='me',
                 id=message_id,
-                format="full"
+                format="metadata",
+                metadataHeaders=["From", "Date"]
             )
         )
     batch.execute()
-    pprint(batch._responses)
+
+    for response in batch._responses.values():
+        print(response[1])
+        message_headers = response[1]["payload"]["headers"]
+        print(message_headers)
 
 
 import database as db
-from pprint import pprint
 
 user = db.get_user(user_id="108090992261441832535")
 get_message_subjects(user)
