@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Typography, Grid, Box } from '@mui/material';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { useNavigate } from 'react-router-dom';
+import MyLogo from '../subscribed_logo_whitebg.svg';
 const SignIn = () => {
 	const { isLoggedIn, setIsLoggedIn, getUserInfo } = useContext(IsLoggedInContext);
 	const navigate = useNavigate();
@@ -34,13 +35,23 @@ const SignIn = () => {
 		<Grid
 			container
 			sx={{ height: '100vh', width: '100vw', m: 0 }}
-			spacing={2}
 			direction="row"
 			justifyContent="center"
 			alignItems="space-between"
 			wrap="wrap-reverse"
 		>
 			<Grid item sm={4} xs={12} sx={{ backgroundColor: 'primary.dark' }}>
+				{/* <Box
+					sx={{
+						width: '100%',
+						height: '20%',
+						backgroundImage: `url("https://i.imgur.com/RMv3Tys.png")`,
+						backgroundSize: 'contain',
+						backgroundPosition: 'top left',
+						backgroundRepeat: 'no-repeat',
+						backgroundOrigin: 'border-box'
+					}}
+				/> */}
 				<Box
 					sx={{
 						display: 'flex',
@@ -48,10 +59,11 @@ const SignIn = () => {
 						alignItems: 'flex-start',
 						justifyContent: 'center',
 						height: '100%',
-						ml: '5%'
+						ml: '10%',
+						maxWidth: '85%'
 					}}
 				>
-					<Typography sx={{ textAlign: 'left', maxWidth: '300px' }} color="white" variant="h5" gutterBottom>
+					<Typography sx={{ textAlign: 'left' }} color="white" variant="h4" gutterBottom>
 						Never lose track of your subscriptions again.
 					</Typography>
 					<GoogleLogin
@@ -68,7 +80,7 @@ const SignIn = () => {
 				sm={8}
 				xs={12}
 				sx={{
-					backgroundImage: `url("https://images.unsplash.com/photo-1634733988138-bf2c3a2a13fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGJpbGxzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60")`,
+					backgroundImage: `url("https://images.unsplash.com/photo-1634733988138-bf2c3a2a13fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80")`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'left center',
 					backgroundRepeat: 'no-repeat',
