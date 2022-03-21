@@ -30,15 +30,32 @@ const SubscriptionItem = ({ subscription }) => {
 		await getSubscriptions();
 	};
 	return (
-		<Card sx={{ width: 600 }} raised>
+		<Card sx={{ width: '60vw', backgroundColor: '#F5F5F5', padding: '0 2vw' }}>
 			<CardContent>
-				<Typography variant="h5">{subscription.name}</Typography>
-
-				<Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-					<Typography variant="body2">Started on: {subscription.dateStarted}</Typography>
-					<Typography variant="body2">Recurs: {subscription.recurs}</Typography>
-					<Typography variant="body2">Next billing on: {subscription.nextBillingDate}</Typography>
-					<Typography variant="body2">Cost: {subscription.priceInDollars}</Typography>
+				<Typography variant="h5" gutterBottom>
+					{subscription.name}
+				</Typography>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						justifyContent: 'space-between',
+						alignItems: 'center'
+					}}
+				>
+					<Typography component="span" variant="body1">
+						Started on: <strong>{subscription.dateStarted}</strong>
+					</Typography>
+					<Typography component="span" variant="body1">
+						Recurs: <strong>{subscription.recurs.toLowerCase()}</strong>
+					</Typography>
+					<Typography component="span" variant="body1">
+						Next billing on: <strong>{subscription.nextBillingDate}</strong>
+					</Typography>
+					<Typography component="span" variant="body1">
+						Cost: <strong>${subscription.priceInDollars.toFixed(2)}</strong>
+					</Typography>
 				</Box>
 			</CardContent>
 			<CardActions>

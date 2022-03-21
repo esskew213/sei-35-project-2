@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Avatar, Box, Button } from '@mui/material';
+import { Typography, Avatar, Box, Button, IconButton } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { clientGoogle } from '../clientGoogle';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import NewSubscriptionForm from '../components/NewSubscriptionForm';
 import SubscriptionsList from '../components/SubscriptionsList';
 import FormModal from '../components/FormModal';
+import SyncIcon from '@mui/icons-material/Sync';
 const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
@@ -38,21 +39,65 @@ const Home = () => {
 						sx={{
 							display: 'flex',
 							flexDirection: 'row',
-							justifyContent: 'flex-start',
-							alignItems: 'baseline'
+							justifyContent: 'space-between',
+							alignItems: 'flex-end',
+							width: '100vw',
+							backgroundColor: 'primary.dark',
+							height: '150px',
+							boxSizing: 'border-box',
+							padding: '30px'
 						}}
 					>
-						<Avatar alt={userInfo.name} src={userInfo.photoUrl} sx={{ width: 56, height: 56 }} />
-						<Typography variant="h4">Welcome back, {userInfo.name}.</Typography>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'row',
+								justifyContent: 'flex-start',
+								alignItems: 'flex-end'
+							}}
+						>
+							<Avatar
+								alt={userInfo.name}
+								src={userInfo.photoUrl}
+								sx={{ width: '90px', height: '90px', mr: '20px' }}
+							/>
+							<Typography color="white" variant="h3" sx={{ lineHeight: 1 }}>
+								Welcome back, {userInfo.name}.
+							</Typography>
+						</Box>
+						<GoogleLogout icon={false} clientId={clientID} buttonText="LOGOUT" onLogoutSuccess={logout} />
 					</Box>
-					<GoogleLogout clientId={clientID} buttonText="Logout" onLogoutSuccess={logout} />
-					<Button variant="contained" onClick={handleOpenModal} color="secondary" endIcon={<AddCircleIcon />}>
-						ADD NEW SUBSCRIPTION
-					</Button>
-					<Button variant="contained" color="success" endIcon={<AddCircleIcon />} onClick={handleNewScan}>
-						SYNC
-					</Button>
-					<SubscriptionsList />
+					<Box sx={{ position: 'fixed', bottom: 20, right: 20 }}>
+						<Button
+							variant="contained"
+							onClick={handleNewScan}
+							color="info"
+							sx={{ width: '150px', mb: '10px' }}
+							endIcon={<SyncIcon />}
+						>
+							SYNC
+						</Button>
+						<br />
+						<Button
+							variant="contained"
+							sx={{ width: '150px' }}
+							onClick={handleOpenModal}
+							color="secondary"
+							endIcon={<AddCircleIcon />}
+						>
+							ADD NEW
+						</Button>
+					</Box>
+					<Box
+						sx={{
+							height: '100%',
+							p: '5vh 0',
+							backgroundColor: 'primary.light',
+							backgroundOrigin: 'border-box'
+						}}
+					>
+						<SubscriptionsList />
+					</Box>
 					<FormModal modalOpen={modalOpen} handleCloseModal={handleCloseModal} />
 				</React.Fragment>
 			) : (

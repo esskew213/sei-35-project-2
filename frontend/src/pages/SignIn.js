@@ -33,29 +33,30 @@ const SignIn = () => {
 	return (
 		<Grid
 			container
-			sx={{ height: '100vh', width: '100%' }}
+			sx={{ height: '100vh', width: '100vw', m: 0 }}
 			spacing={2}
 			direction="row"
 			justifyContent="center"
 			alignItems="space-between"
+			wrap="wrap-reverse"
 		>
-			<Grid item md={4} style={{ backgroundColor: 'cornflowerblue' }}>
+			<Grid item sm={4} xs={12} sx={{ backgroundColor: 'primary.dark' }}>
 				<Box
 					sx={{
 						display: 'flex',
 						flexDirection: 'column',
-						alignItems: 'center',
+						alignItems: 'flex-start',
 						justifyContent: 'center',
 						height: '100%',
-						textAlign: 'center'
+						ml: '5%'
 					}}
 				>
-					<Typography color="white" variant="h5" gutterBottom>
-						Let's get started
+					<Typography sx={{ textAlign: 'left', maxWidth: '300px' }} color="white" variant="h5" gutterBottom>
+						Never lose track of your subscriptions again.
 					</Typography>
 					<GoogleLogin
 						clientId={clientID}
-						buttonText="Login with Google"
+						buttonText="Get started with Google"
 						onSuccess={sendTokenToServer}
 						onFailure={failureResponse}
 						cookiePolicy={'single_host_origin'}
@@ -64,11 +65,14 @@ const SignIn = () => {
 			</Grid>
 			<Grid
 				item
-				md={8}
-				style={{
+				sm={8}
+				xs={12}
+				sx={{
 					backgroundImage: `url("https://images.unsplash.com/photo-1634733988138-bf2c3a2a13fa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fGJpbGxzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60")`,
 					backgroundSize: 'cover',
-					backgroundRepeat: 'no-repeat'
+					backgroundPosition: 'left center',
+					backgroundRepeat: 'no-repeat',
+					backgroundOrigin: 'border-box'
 				}}
 			/>
 		</Grid>

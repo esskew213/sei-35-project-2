@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-	TextField,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	Button,
-	InputAdornment,
-	IconButton,
-	Box
-} from '@mui/material';
+import { TextField, FormControl, InputLabel, Select, MenuItem, Button, InputAdornment, Box } from '@mui/material';
 import TableDatePicker from './TableDatePicker';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
@@ -32,8 +22,9 @@ const DraftNewSub = ({
 			setName(newName);
 			setPrice(newPriceInDollars);
 			setRecurs(newRecurs);
+			setStartDate(new Date(newDateStarted));
 		},
-		[ newName, newPriceInDollars, newRecurs ]
+		[ newName, newPriceInDollars, newRecurs, newDateStarted ]
 	);
 
 	const handleNameChange = (evt) => {
