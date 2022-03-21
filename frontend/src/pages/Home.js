@@ -16,12 +16,17 @@ const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
 	const { userInfo, setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
+	// console.log('LOGGED IN:', isLoggedIn);
 	const logout = () => {
 		setIsLoggedIn(false);
 		localStorage.clear();
 		navigate('/');
 		setUserInfo({ name: 'Anonymous Badger', photoUrl: '' });
 	};
+	// useEffect(() => {
+	// 	getUserInfo();
+	// 	console.log('getting user info');
+	// }, []);
 	const handleNewScan = async () => {
 		navigate('/scan_results');
 	};

@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Typography, Button } from '@mui/material';
 import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
+import { IsLoggedInContext } from '../context/LoggedIn.context';
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
 	const [ draftNewSubs, setDraftNewSubs ] = useState([]);
+	// const { isLoggedIn } = useContext(IsLoggedInContext);
+	// console.log('ON SCAN PAGE, LOGGED IN:', isLoggedIn);
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (isScanning) {
