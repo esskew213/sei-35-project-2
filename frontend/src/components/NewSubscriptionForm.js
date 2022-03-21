@@ -119,6 +119,7 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px', mx: '20px' }}>
 					<TableDatePicker id="start-date" date={startDate} onInputChange={handleStartDateChange} />
 				</FormControl>
+
 				<Button type="submit" variant="contained" sx={{ mx: '15px' }}>
 					SUBMIT
 				</Button>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
-
+import { useNavigate } from 'react-router-dom';
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
 	const [ draftNewSubs, setDraftNewSubs ] = useState([]);
-
+	const navigate = useNavigate();
 	useEffect(() => {
 		if (isScanning) {
 			const getNewSubscriptions = async () => {
@@ -46,6 +46,15 @@ const ScanResults = () => {
 		<React.Fragment>
 			<Typography variant="h4"> NEW SUBSCRIPTIONS</Typography>
 			{newSubscriptionList}
+			<Button
+				variant="contained"
+				color="success"
+				onClick={() => {
+					navigate('/home');
+				}}
+			>
+				BACK TO HOME
+			</Button>
 		</React.Fragment>
 	);
 };
