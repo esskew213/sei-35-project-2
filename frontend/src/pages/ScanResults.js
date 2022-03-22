@@ -4,8 +4,6 @@ import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
-import { IsLoggedInContext } from '../context/LoggedIn.context';
-import parse from 'html-react-parser';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);

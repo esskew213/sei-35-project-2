@@ -1,19 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Avatar, Box, Button, IconButton } from '@mui/material';
+import { Typography, Avatar, Box, Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { clientGoogle } from '../clientGoogle';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { GoogleLogout } from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
-import NewSubscriptionForm from '../components/NewSubscriptionForm';
 import SubscriptionsList from '../components/SubscriptionsList';
 import FormModal from '../components/FormModal';
 import SyncIcon from '@mui/icons-material/Sync';
+
 const Home = () => {
 	const clientID = clientGoogle.web.client_id;
 	const navigate = useNavigate();
 	const { userInfo, setUserInfo, isLoggedIn, setIsLoggedIn } = useContext(IsLoggedInContext);
+
 	// console.log('LOGGED IN:', isLoggedIn);
 	const logout = () => {
 		setIsLoggedIn(false);
