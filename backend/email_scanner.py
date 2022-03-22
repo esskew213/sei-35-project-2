@@ -41,9 +41,3 @@ def get_message_subjects(user: User):
         return ['No messages found.']
     else:
         return message_subjects
-
-
-import database as db
-
-user = db.get_user(user_id="108090992261441832535")
-print(get_message_subjects(user))
