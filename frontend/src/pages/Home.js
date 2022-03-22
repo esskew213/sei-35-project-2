@@ -66,7 +66,7 @@ const Home = () => {
 								Welcome back, {userInfo.name}.
 							</Typography>
 						</Box>
-						<GoogleLogout icon={false} clientId={clientID} buttonText="LOGOUT" onLogoutSuccess={logout} />
+						<GoogleLogout clientId={clientID} buttonText="LOGOUT" onLogoutSuccess={logout} />
 					</Box>
 					<Box sx={{ position: 'fixed', bottom: 20, right: 20 }}>
 						<Button
@@ -91,10 +91,13 @@ const Home = () => {
 					</Box>
 					<Box
 						sx={{
-							height: '100vh',
+							height: '100%',
 							p: '5vh 0',
 							backgroundColor: 'primary.light',
-							backgroundOrigin: 'border-box'
+							backgroundOrigin: 'border-box',
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center'
 						}}
 					>
 						<SubscriptionsList />

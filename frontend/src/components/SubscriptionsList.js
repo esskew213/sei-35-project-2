@@ -3,7 +3,7 @@ import SubscriptionItem from './SubscriptionItem';
 import { Grid, Box, Button } from '@mui/material';
 import { SubscriptionsContext } from '../context/Subscriptions.context';
 import { sortByBillingDate, sortByName, sortByPrice, sortByDateStarted } from '../utils/sortFunctions';
-import { Rectangle } from '@mui/icons-material';
+import SortIcon from '@mui/icons-material/Sort';
 const SubscriptionsList = () => {
 	const { subscriptions, getSubscriptions } = useContext(SubscriptionsContext);
 	const [ displayedSubs, setDisplayedSubs ] = useState('');
@@ -27,16 +27,27 @@ const SubscriptionsList = () => {
 		setDisplayedSubs((prevState) => sortByBillingDate(JSON.parse(JSON.stringify(prevState))));
 	};
 	return (
-		<React.Fragment>
-			<Button onClick={handleSortByBillingDate}>SORT</Button>
+		<Box sx={{ maxWidth: '70vw' }}>
 			<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
+				<Grid item sx={{ alignSelf: 'flex-end' }}>
+					<Button
+						color="secondary"
+						variant="outlined"
+						size="small"
+						margin="dense"
+						onClick={handleSortByBillingDate}
+						endIcon={<SortIcon />}
+					>
+						SORT
+					</Button>
+				</Grid>
 				{toDisplay.map((subscription, idx) => (
 					<Grid item xl={6} lg={6} md={8} sm={8} xs={12} key={idx}>
 						<SubscriptionItem subscription={subscription} />
 					</Grid>
 				))}
 			</Grid>
-		</React.Fragment>
+		</Box>
 	);
 };
 

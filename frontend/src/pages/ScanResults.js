@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Typography, Button } from '@mui/material';
+import { Grid, Typography, Button, Box } from '@mui/material';
 import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
@@ -53,17 +53,38 @@ const ScanResults = () => {
 	});
 	return (
 		<React.Fragment>
-			<Typography variant="h4"> NEW SUBSCRIPTIONS</Typography>
-			{newSubscriptionList}
-			<Button
-				variant="contained"
-				color="success"
-				onClick={() => {
-					navigate('/home');
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'flex-end',
+					width: '100vw',
+					backgroundColor: 'primary.dark',
+					height: '150px',
+					boxSizing: 'border-box',
+					padding: '30px',
+					mb: '3vh'
 				}}
 			>
-				BACK TO HOME
-			</Button>
+				<Typography color="white" variant="h4">
+					{' '}
+					NEW SUBSCRIPTIONS
+				</Typography>
+				<Button
+					variant="contained"
+					color="secondary"
+					onClick={() => {
+						navigate('/home');
+					}}
+				>
+					BACK TO HOME
+				</Button>
+			</Box>
+
+			<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
+				{newSubscriptionList}
+			</Grid>
 		</React.Fragment>
 	);
 };

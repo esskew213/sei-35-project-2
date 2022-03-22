@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 import useInputState from '../hooks/setInputState';
-import { TextField, FormControl, InputLabel, Select, MenuItem, Button, InputAdornment, Box } from '@mui/material';
+import {
+	Typography,
+	Divider,
+	TextField,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	Button,
+	InputAdornment,
+	Box
+} from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import TableDatePicker from './TableDatePicker';
 import { useContext } from 'react';
@@ -59,58 +70,88 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 			<Box
 				sx={{
 					display: 'flex',
-					flexDirection: 'row',
-					alignItems: 'flex-end',
-					justifyContent: 'space-between',
-					flexWrap: 'wrap',
-					mb: '20px'
+					flexDirection: 'column',
+					alignItems: 'flex-start',
+					width: '40vw',
+					maxWidth: '500px'
 				}}
 			>
-				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '200px', mx: '15px' }}>
-					<TextField
-						variant="standard"
-						size="small"
-						label="Subscription name"
-						type="text"
-						value={name}
-						onChange={handleNameChange}
-						required
-						autoFocus
-						placeholder="e.g. cold brew coffee"
-					/>
-				</FormControl>
-				<FormControl variant="standard" margin="dense" required sx={{ width: '120px', mx: '15px' }}>
-					<TextField
-						variant="standard"
-						size="small"
-						id="price"
-						label="Price"
-						type="number"
-						value={price}
-						onChange={handlePriceChange}
-						min="0"
-						required
-						placeholder="0.00"
-						step="0.01"
-						InputProps={{
-							startAdornment: <InputAdornment position="start">$</InputAdornment>,
-							inputProps: { min: 0, step: 0.01 }
-						}}
-					/>
-				</FormControl>
-				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px', mx: '15px' }}>
-					<InputLabel htmlFor="recurs">Recurs</InputLabel>
-					<Select id="recurs" margin="dense" value={recurs} onChange={handleRecursChange} label="Recurs">
-						<MenuItem value="NEVER">Never</MenuItem>
-						<MenuItem value={'WEEKLY'}>Weekly</MenuItem>
-						<MenuItem value={'MONTHLY'}>Monthly</MenuItem>
-						<MenuItem value={'YEARLY'}>Yearly</MenuItem>
-					</Select>
-				</FormControl>
-				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px', mx: '20px' }}>
-					<TableDatePicker id="start-date" date={startDate} onInputChange={handleStartDateChange} />
-				</FormControl>
+				<Typography
+					sx={{ color: 'primary.dark', fontSize: '1.1rem', alignSelf: 'center' }}
+					gutterBottom
+					variant="button"
+					component="h6"
+				>
+					{subscription ? 'Edit subscription' : 'Add a subscription'}
+				</Typography>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						justifyContent: 'center',
+						mb: '10px'
+					}}
+				>
+					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '200px' }}>
+						<TextField
+							variant="standard"
+							size="small"
+							label="Subscription name"
+							type="text"
+							value={name}
+							onChange={handleNameChange}
+							required
+							autoFocus
+							placeholder="e.g. cold brew coffee"
+						/>
+					</FormControl>
+					<FormControl variant="standard" margin="dense" required sx={{ width: '100px' }}>
+						<TextField
+							variant="standard"
+							size="small"
+							id="price"
+							label="Price"
+							type="number"
+							value={price}
+							onChange={handlePriceChange}
+							min="0"
+							required
+							placeholder="0.00"
+							step="0.01"
+							InputProps={{
+								startAdornment: <InputAdornment position="start">$</InputAdornment>,
+								inputProps: { min: 0, step: 0.01 }
+							}}
+						/>
+					</FormControl>
+				</Box>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						justifyContent: 'flex-start',
+						alignItems: 'flex-end',
+						mb: '10px'
+					}}
+				>
+					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+						<InputLabel htmlFor="recurs">Recurs</InputLabel>
+						<Select id="recurs" margin="dense" value={recurs} onChange={handleRecursChange} label="Recurs">
+							<MenuItem value="NEVER">Never</MenuItem>
+							<MenuItem value={'WEEKLY'}>Weekly</MenuItem>
+							<MenuItem value={'MONTHLY'}>Monthly</MenuItem>
+							<MenuItem value={'YEARLY'}>Yearly</MenuItem>
+						</Select>
+					</FormControl>
+
+					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+						<TableDatePicker id="start-date" date={startDate} onInputChange={handleStartDateChange} />
+					</FormControl>
+				</Box>
 			</Box>
+			<Divider />
 			<Box
 				sx={{
 					display: 'flex',
@@ -125,7 +166,7 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 					type="submit"
 					color="success"
 					variant="contained"
-					sx={{ mx: '15px' }}
+					sx={{ mt: '15px' }}
 					endIcon={<DoneIcon />}
 				>
 					SUBMIT

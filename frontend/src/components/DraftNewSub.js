@@ -1,6 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import DoneIcon from '@mui/icons-material/Done';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-import { TextField, FormControl, InputLabel, Select, MenuItem, Button, InputAdornment, Box } from '@mui/material';
+import {
+	Typography,
+	Grid,
+	Card,
+	CardContent,
+	CardActions,
+	TextField,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
+	Button,
+	InputAdornment,
+	Box,
+	Divider
+} from '@mui/material';
 import TableDatePicker from './TableDatePicker';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
@@ -58,75 +75,122 @@ const DraftNewSub = ({
 		handleDelete(idx);
 	};
 	return (
-		<form onSubmit={handleSubmit}>
-			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'row',
-					alignItems: 'baseline',
-					justifyContent: 'space-between',
-					flexWrap: 'wrap',
-					maxWidth: '830px'
-				}}
-			>
-				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '200px', mx: '15px' }}>
-					<TextField
-						variant="standard"
-						size="small"
-						label="Subscription name"
-						type="text"
-						value={name}
-						onChange={handleNameChange}
-						required
-					/>
-				</FormControl>
-				<FormControl variant="standard" margin="dense" required sx={{ width: '120px', mx: '15px' }}>
-					<TextField
-						variant="standard"
-						size="small"
-						id="price"
-						label="Price"
-						type="number"
-						value={price}
-						onChange={handlePriceChange}
-						min="0"
-						required
-						step="0.01"
-						InputProps={{
-							startAdornment: <InputAdornment position="start">$</InputAdornment>,
-							inputProps: { min: 0, step: 0.01 }
-						}}
-					/>
-				</FormControl>
-				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px', mx: '15px' }}>
-					<InputLabel htmlFor="recurs">Recurs</InputLabel>
-					<Select id="recurs" margin="dense" value={recurs} onChange={handleRecursChange} label="Recurs">
-						<MenuItem value="NEVER">
-							<em>Never</em>
-						</MenuItem>
-						<MenuItem value={'WEEKLY'}>Weekly</MenuItem>
-						<MenuItem value={'MONTHLY'}>Monthly</MenuItem>
-						<MenuItem value={'YEARLY'}>Yearly</MenuItem>
-					</Select>
-				</FormControl>
-				<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px', mx: '20px' }}>
-					<TableDatePicker id="start-date" date={startDate} onInputChange={handleStartDateChange} />
-				</FormControl>
-				<Button
-					variant="contained"
-					onClick={(evt) => {
-						evt.preventDefault();
-						handleDelete(idx);
-					}}
-					sx={{ mx: '15px' }}
-				>
-					DELETE
-				</Button>
-				<Button variant="contained" type="submit" sx={{ mx: '15px' }}>
-					SUBMIT
-				</Button>
-			</Box>
-		</form>
+		<Grid item>
+			<form onSubmit={handleSubmit}>
+				<Card sx={{ width: '60vw', maxWidth: '500px', backgroundColor: '#F5F5F5', padding: '2vh 2vw' }}>
+					<CardContent>
+						<Typography
+							variant="h6"
+							component="h6"
+							sx={{ color: 'primary.main', lineHeight: 0, mb: '3vh' }}
+							gutterBottom
+						>
+							Is this a subscription?
+						</Typography>
+						<Divider />
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'row',
+								flexWrap: 'wrap',
+								justifyContent: 'space-between',
+								alignItems: 'flex-end',
+								mt: '2vh'
+							}}
+						>
+							<FormControl variant="standard" margin="dense" required sx={{ minWidth: '200px' }}>
+								<TextField
+									variant="standard"
+									size="small"
+									label="Subscription name"
+									type="text"
+									value={name}
+									onChange={handleNameChange}
+									required
+								/>
+							</FormControl>
+							<FormControl variant="standard" margin="dense" required sx={{ width: '120px' }}>
+								<TextField
+									variant="standard"
+									size="small"
+									id="price"
+									label="Price"
+									type="number"
+									value={price}
+									onChange={handlePriceChange}
+									min="0"
+									required
+									step="0.01"
+									InputProps={{
+										startAdornment: <InputAdornment position="start">$</InputAdornment>,
+										inputProps: { min: 0, step: 0.01 }
+									}}
+								/>
+							</FormControl>
+						</Box>
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'row',
+								flexWrap: 'wrap',
+								justifyContent: 'space-between',
+								alignItems: 'flex-end'
+							}}
+						>
+							<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+								<InputLabel htmlFor="recurs">Recurs</InputLabel>
+								<Select
+									id="recurs"
+									margin="dense"
+									value={recurs}
+									onChange={handleRecursChange}
+									label="Recurs"
+								>
+									<MenuItem value="NEVER">
+										<em>Never</em>
+									</MenuItem>
+									<MenuItem value={'WEEKLY'}>Weekly</MenuItem>
+									<MenuItem value={'MONTHLY'}>Monthly</MenuItem>
+									<MenuItem value={'YEARLY'}>Yearly</MenuItem>
+								</Select>
+							</FormControl>
+							<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+								<TableDatePicker
+									id="start-date"
+									date={startDate}
+									onInputChange={handleStartDateChange}
+								/>
+							</FormControl>
+						</Box>
+					</CardContent>
+					<CardActions>
+						<Button
+							variant="outlined"
+							color="error"
+							onClick={(evt) => {
+								evt.preventDefault();
+								handleDelete(idx);
+							}}
+							sx={{ mr: '15px', width: '120px' }}
+							endIcon={<DeleteOutlineOutlinedIcon />}
+							margin="dense"
+						>
+							DELETE
+						</Button>
+						<Button
+							endIcon={<DoneIcon />}
+							color="success"
+							variant="outlined"
+							type="submit"
+							sx={{ width: '120px' }}
+							margin="dense"
+						>
+							SAVE
+						</Button>
+					</CardActions>
+				</Card>
+			</form>
+		</Grid>
 	);
 };
 

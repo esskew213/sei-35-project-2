@@ -7,6 +7,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import { Divider } from '@mui/material';
 import FormModal from './FormModal';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
@@ -30,11 +31,31 @@ const SubscriptionItem = ({ subscription }) => {
 		await getSubscriptions();
 	};
 	return (
-		<Card sx={{ width: '60vw', backgroundColor: '#F5F5F5', padding: '0 2vw' }}>
+		<Card sx={{ width: '60vw', maxWidth: '500px', backgroundColor: '#F5F5F5', padding: '0 2vw' }}>
 			<CardContent>
-				<Typography variant="h5" gutterBottom>
+				<Typography variant="h4" sx={{ color: 'primary.dark' }} gutterBottom>
 					{subscription.name}
 				</Typography>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						mb: '5px'
+					}}
+				>
+					<Typography component="span" variant="body1" sx={{ mr: '30%' }}>
+						Started on: <strong>{subscription.dateStarted}</strong>
+					</Typography>
+					<Typography component="span" variant="body1">
+						Recurs:{' '}
+						<strong>
+							{subscription.recurs.substring(0, 1) + subscription.recurs.substring(1).toLowerCase()}
+						</strong>
+					</Typography>
+				</Box>
 				<Box
 					sx={{
 						display: 'flex',
@@ -45,12 +66,6 @@ const SubscriptionItem = ({ subscription }) => {
 					}}
 				>
 					<Typography component="span" variant="body1">
-						Started on: <strong>{subscription.dateStarted}</strong>
-					</Typography>
-					<Typography component="span" variant="body1">
-						Recurs: <strong>{subscription.recurs.toLowerCase()}</strong>
-					</Typography>
-					<Typography component="span" variant="body1">
 						Next billing on: <strong>{subscription.nextBillingDate}</strong>
 					</Typography>
 					<Typography component="span" variant="body1">
@@ -58,6 +73,7 @@ const SubscriptionItem = ({ subscription }) => {
 					</Typography>
 				</Box>
 			</CardContent>
+			<Divider />
 			<CardActions>
 				<IconButton aria-label="edit" onClick={handleOpenModal}>
 					<ModeEditOutlineOutlinedIcon />
