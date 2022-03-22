@@ -68,6 +68,7 @@ class UserIOModel(BaseModel):
 class ScanResultsIOModel(BaseModel):
     date_started: Optional[date]
     name: constr(strip_whitespace=True, min_length=1)
+    message_html: Optional[str]
 
 
 class ScanListIOModel(BaseModel):
