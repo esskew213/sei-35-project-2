@@ -4,6 +4,7 @@ import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
+import EmailPopover from '../components/EmailPopover';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
@@ -48,6 +49,7 @@ const ScanResults = () => {
 				newPriceInDollars={sub.priceInDollars}
 				newRecurs={sub.recurs}
 				handleDelete={handleDelete}
+				messageHtml={sub.messageHtml}
 			/>
 		);
 	});

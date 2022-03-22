@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-
+import EmailPopover from './EmailPopover';
 import {
 	Typography,
 	Grid,
@@ -27,6 +27,7 @@ const DraftNewSub = ({
 	newDateStarted = new Date(),
 	newPriceInDollars = 0,
 	newRecurs = 'NEVER',
+	messageHtml = '<div>Nothing to display</div>',
 	idx
 }) => {
 	const [ name, setName ] = useState('');
@@ -79,14 +80,23 @@ const DraftNewSub = ({
 			<form onSubmit={handleSubmit}>
 				<Card sx={{ width: '60vw', maxWidth: '500px', backgroundColor: '#F5F5F5', padding: '2vh 2vw' }}>
 					<CardContent>
-						<Typography
-							variant="h6"
-							component="h6"
-							sx={{ color: 'primary.main', lineHeight: 0, mb: '3vh' }}
-							gutterBottom
+						<Box
+							sx={{
+								display: 'flex',
+								flexDirection: 'row',
+								flexWrap: 'wrap',
+								justifyContent: 'space-between',
+								alignItems: 'baseline',
+								mb: '1vh'
+							}}
 						>
-							Is this a subscription?
-						</Typography>
+							<Typography variant="h6" component="span" sx={{ color: 'primary.main' }}>
+								Is this a subscription?
+							</Typography>
+							<EmailPopover>
+								<iframe sandbox width={400} height={300} srcDoc={messageHtml} title="message-display" />
+							</EmailPopover>
+						</Box>
 						<Divider />
 						<Box
 							sx={{
@@ -163,7 +173,7 @@ const DraftNewSub = ({
 							</FormControl>
 						</Box>
 					</CardContent>
-					<CardActions>
+					<CardActions sx={{ position: 'relative' }}>
 						<Button
 							variant="outlined"
 							color="error"
@@ -171,7 +181,7 @@ const DraftNewSub = ({
 								evt.preventDefault();
 								handleDelete(idx);
 							}}
-							sx={{ mr: '15px', width: '120px' }}
+							sx={{ mr: '5px', width: '120px' }}
 							endIcon={<DeleteOutlineOutlinedIcon />}
 							margin="dense"
 						>
@@ -182,7 +192,7 @@ const DraftNewSub = ({
 							color="success"
 							variant="outlined"
 							type="submit"
-							sx={{ width: '120px' }}
+							sx={{ width: '120px', mr: '30px' }}
 							margin="dense"
 						>
 							SAVE
