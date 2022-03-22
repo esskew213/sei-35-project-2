@@ -24,9 +24,10 @@ const ScanResults = () => {
 					headers: { authorization: localStorage.token }
 				});
 				console.log(response.data.scanList);
+				console.log(response.data.scanList[0].messageHtml);
 				setMessageHtml(response.data.scanList[0].messageHtml);
-				// const tentativeNewSubscriptions = response.data.scanList;
-				// setDraftNewSubs(tentativeNewSubscriptions);
+				const tentativeNewSubscriptions = response.data.scanList;
+				setDraftNewSubs(tentativeNewSubscriptions);
 			};
 			getNewSubscriptions();
 			setIsScanning(false);
@@ -54,7 +55,6 @@ const ScanResults = () => {
 	});
 	return (
 		<React.Fragment>
-			{messageHtml ? parse(messageHtml) : null}
 			<Typography variant="h4"> NEW SUBSCRIPTIONS</Typography>
 			{newSubscriptionList}
 			<Button

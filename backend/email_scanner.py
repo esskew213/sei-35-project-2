@@ -5,7 +5,7 @@ from db_models import User
 from google_auth import get_and_refresh_credentials
 import base64
 import pprint
-
+import dateparser
 
 def get_message_subjects(user: User):
     credentials = get_and_refresh_credentials(user)
@@ -14,8 +14,8 @@ def get_message_subjects(user: User):
     # Get the message ids of possible subscriptions
     response = service.users().messages().list(
         userId='me',
-        maxResults=1,
-        q="+subscribing OR +subscription -(+canceled OR +cancelled OR +newsletter)",
+        maxResults=2,
+        q='+subscribing OR +subscription {confirmation OR payment OR charge OR bill OR receipt} -newsletter  -"manage your" -"email preferences" -"unsubscribe from" -"discount" -"offer" -"been cancelled" -"been canceled" -"have canceled" -"have cancelled" -"will be cancelled"',
         includeSpamTrash=False
     ).execute()
     message_ids = [message["id"] for message in response["messages"]]
@@ -31,20 +31,27 @@ def get_message_subjects(user: User):
         message_padded = message_body_encoded + (4 - len(message_body_encoded) % 4)*'='
         message_body_b64 = base64.urlsafe_b64decode(message_padded.encode('ascii'))
         message_body_html = message_body_b64.decode('unicode_escape')
-        message_info['message_html'] = re.search(r'(?s)<html>(.*)</html>', message_body_html, re.M).group(1)
 
-        # pp.pprint(re.search(r'(Sent)', message_body_decoded, re.M))
+        re_html = re.search(r'(?s)<html>(.*)</html>', message_body_html, re.M)
+        if re_html is not None:
+            message_info['message_html'] = re_html.group(1)
+        else:
+            message_info['message_html'] = message_body_html
+
+            # pp.pprint(re.search(r'(Sent)', message_body_decoded, re.M))
         message_headers = message_payload["headers"]
         for message_header in message_headers:
             if message_header['name'] == 'From':
                 re_name = re.match(r'(.*)\s[<]', message_header['value'])
                 message_info['name'] = re_name.group(1)
+
             elif message_header['name'] == 'Date':
                 print(message_header['value'])
+                #TODO: fix some dates can't print
                 # re_date = re.match(r'[0-9]+\s[a-zA-Z]{3}\s[0-9]{4}', message_header['value'])
                 # print(re_date)
-                message_info['date_started'] = datetime.strptime(message_header['value'], "%a, %d %b %Y %H:%M:%S %z").date()
-
+                # message_info['date_started'] = datetime.strptime(message_header['value'], "%a, %d %b %Y %H:%M:%S %z").date()
+                message_info['date_started'] = dateparser.parse(message_header['value']).date()
         all_messages_info.append(message_info)
         pp.pprint(all_messages_info)
 
@@ -54,7 +61,7 @@ def get_message_subjects(user: User):
     else:
         return all_messages_info
 
-
+#
 # import database as db
 # user = db.get_user(user_id="108090992261441832535")
 # get_message_subjects(user)
