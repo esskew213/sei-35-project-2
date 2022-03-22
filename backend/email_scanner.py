@@ -31,7 +31,8 @@ def get_message_subjects(user: User):
         message_padded = message_body_encoded + (4 - len(message_body_encoded) % 4)*'='
         message_body_b64 = base64.urlsafe_b64decode(message_padded.encode('ascii'))
         message_body_html = message_body_b64.decode('unicode_escape')
-        message_info['message_html'] = message_body_html
+        message_info['message_html'] = re.search(r'(?s)<html>(.*)</html>', message_body_html, re.M).group(1)
+
         # pp.pprint(re.search(r'(Sent)', message_body_decoded, re.M))
         message_headers = message_payload["headers"]
         for message_header in message_headers:
@@ -48,12 +49,12 @@ def get_message_subjects(user: User):
         pp.pprint(all_messages_info)
 
     #
-    # if not message_subjects:
-    #     return ['No messages found.']
-    # else:
-    #     return message_subjects
+    if not all_messages_info:
+        return ['No messages found.']
+    else:
+        return all_messages_info
 
 
-import database as db
-user = db.get_user(user_id="108090992261441832535")
-get_message_subjects(user)
+# import database as db
+# user = db.get_user(user_id="108090992261441832535")
+# get_message_subjects(user)

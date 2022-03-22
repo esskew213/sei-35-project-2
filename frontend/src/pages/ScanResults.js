@@ -5,9 +5,13 @@ import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
+import parse from 'html-react-parser';
+
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
 	const [ draftNewSubs, setDraftNewSubs ] = useState([]);
+	const [ messageHtml, setMessageHtml ] = useState('');
+
 	// const { isLoggedIn } = useContext(IsLoggedInContext);
 	// console.log('ON SCAN PAGE, LOGGED IN:', isLoggedIn);
 	const navigate = useNavigate();
@@ -19,12 +23,14 @@ const ScanResults = () => {
 				const response = await client.get('http://127.0.0.1:8000/fetch_new_subscriptions', {
 					headers: { authorization: localStorage.token }
 				});
-				console.log(response.data);
-				const tentativeNewSubscriptions = response.data.scanList;
-				setDraftNewSubs(tentativeNewSubscriptions);
+				console.log(response.data.scanList);
+				setMessageHtml(response.data.scanList[0].messageHtml);
+				// const tentativeNewSubscriptions = response.data.scanList;
+				// setDraftNewSubs(tentativeNewSubscriptions);
 			};
 			getNewSubscriptions();
 			setIsScanning(false);
+			console.log(messageHtml ? messageHtml : 'no HTML');
 		}
 	}, []);
 
@@ -48,6 +54,7 @@ const ScanResults = () => {
 	});
 	return (
 		<React.Fragment>
+			{messageHtml ? parse(messageHtml) : null}
 			<Typography variant="h4"> NEW SUBSCRIPTIONS</Typography>
 			{newSubscriptionList}
 			<Button
