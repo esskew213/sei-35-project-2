@@ -41,17 +41,6 @@ const SignIn = () => {
 			wrap="wrap-reverse"
 		>
 			<Grid item sm={4} xs={12} sx={{ backgroundColor: 'primary.dark' }}>
-				{/* <Box
-					sx={{
-						width: '100%',
-						height: '20%',
-						backgroundImage: `url("https://i.imgur.com/RMv3Tys.png")`,
-						backgroundSize: 'contain',
-						backgroundPosition: 'top left',
-						backgroundRepeat: 'no-repeat',
-						backgroundOrigin: 'border-box'
-					}}
-				/> */}
 				<Box
 					sx={{
 						display: 'flex',
@@ -63,7 +52,20 @@ const SignIn = () => {
 						maxWidth: '85%'
 					}}
 				>
-					<Typography sx={{ textAlign: 'left' }} color="white" variant="h4" gutterBottom>
+					<Box
+						sx={{
+							width: '80%',
+							minWidth: '180px',
+							height: '10%',
+							backgroundImage: `url("https://i.imgur.com/ipVu4UD.png")`,
+							backgroundSize: 'contain',
+							backgroundPosition: 'top left',
+							backgroundRepeat: 'no-repeat',
+							backgroundOrigin: 'border-box',
+							mb: '3%'
+						}}
+					/>
+					<Typography sx={{ textAlign: 'left', mb: '10%' }} color="white" variant="h5" gutterBottom>
 						Never lose track of your subscriptions again.
 					</Typography>
 					<GoogleLogin
