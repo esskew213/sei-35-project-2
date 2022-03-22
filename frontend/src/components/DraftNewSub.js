@@ -6,9 +6,9 @@ import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 const DraftNewSub = ({
 	handleDelete,
-	newName = null,
+	newName = '',
 	newDateStarted = new Date(),
-	newPriceInDollars = null,
+	newPriceInDollars = 0,
 	newRecurs = 'NEVER',
 	idx
 }) => {
@@ -16,7 +16,7 @@ const DraftNewSub = ({
 	const [ price, setPrice ] = useState('');
 	const [ recurs, setRecurs ] = useState('');
 	const [ startDate, setStartDate ] = useState(new Date());
-
+	console.log(newDateStarted);
 	useEffect(
 		() => {
 			setName(newName);

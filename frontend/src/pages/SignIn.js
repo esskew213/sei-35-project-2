@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Typography, Grid, Box } from '@mui/material';
 import { IsLoggedInContext } from '../context/LoggedIn.context';
 import { useNavigate } from 'react-router-dom';
-import MyLogo from '../subscribed_logo_whitebg.svg';
+
 const SignIn = () => {
 	const { isLoggedIn, setIsLoggedIn, getUserInfo } = useContext(IsLoggedInContext);
 	const navigate = useNavigate();

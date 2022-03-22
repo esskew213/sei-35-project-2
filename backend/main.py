@@ -7,10 +7,11 @@ from typing import Optional
 import database as db
 from conversion_util import convert_subscription_io_to_orm_model, convert_subscription_to_io_model, \
     convert_user_to_io_model
+from email_scanner import get_message_subjects
 from google_auth import handle_signup, create_user_from_jwt
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from io_models import SubscriptionIOModel, SubsListIOModel, RecursFreq
+from io_models import SubscriptionIOModel, SubsListIOModel, RecursFreq, ScanListIOModel
 
 app = FastAPI()
 
@@ -77,23 +78,26 @@ async def get_user_info(authorization: Optional[str] = Header(None)):
 
 @app.get("/fetch_new_subscriptions")
 async def fetch_new_subscriptions(authorization: Optional[str] = Header(None)):
-    return SubsListIOModel(subscriptions=[
-        SubscriptionIOModel(
-            date_started=date(year=2020, month=2, day=29),
-            name="First email scan",
-            price_in_dollars=49.90,
-            recurs=RecursFreq.YEARLY
-        ),
-        SubscriptionIOModel(
-            date_started=date(year=2021, month=3, day=31),
-            name="Second email scan",
-            price_in_dollars=19.90,
-            recurs=RecursFreq.MONTHLY
-        ),
-        SubscriptionIOModel(
-            date_started=date(year=2019, month=1, day=1),
-            name="Third email scan",
-            price_in_dollars=33.33,
-            recurs=RecursFreq.NEVER
-        )
-    ])
+    user = db.get_user(user_id=authorization)
+    return ScanListIOModel(scan_list=get_message_subjects(user))
+
+# SubsListIOModel(subscriptions=[
+#         SubscriptionIOModel(
+#             date_started=date(year=2020, month=2, day=29),
+#             name="First email scan",
+#             price_in_dollars=49.90,
+#             recurs=RecursFreq.YEARLY
+#         ),
+#         SubscriptionIOModel(
+#             date_started=date(year=2021, month=3, day=31),
+#             name="Second email scan",
+#             price_in_dollars=19.90,
+#             recurs=RecursFreq.MONTHLY
+#         ),
+#         SubscriptionIOModel(
+#             date_started=date(year=2019, month=1, day=1),
+#             name="Third email scan",
+#             price_in_dollars=33.33,
+#             recurs=RecursFreq.NEVER
+#         )
+#     ]

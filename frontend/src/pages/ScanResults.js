@@ -19,7 +19,8 @@ const ScanResults = () => {
 				const response = await client.get('http://127.0.0.1:8000/fetch_new_subscriptions', {
 					headers: { authorization: localStorage.token }
 				});
-				const tentativeNewSubscriptions = response.data.subscriptions;
+				console.log(response.data);
+				const tentativeNewSubscriptions = response.data.scanList;
 				setDraftNewSubs(tentativeNewSubscriptions);
 			};
 			getNewSubscriptions();
