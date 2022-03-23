@@ -27,7 +27,7 @@ const SubscriptionsList = () => {
 		setDisplayedSubs((prevState) => sortByBillingDate(JSON.parse(JSON.stringify(prevState))));
 	};
 	return (
-		<Box sx={{ maxWidth: '70vw' }}>
+		<Box sx={{ width: '60vw', maxWidth: '500px', position: 'relative' }}>
 			<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
 				<Grid item sx={{ alignSelf: 'flex-end' }}>
 					<Button
