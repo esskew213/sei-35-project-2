@@ -5,6 +5,7 @@ import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
 import EmailPopover from '../components/EmailPopover';
+import { deepPurple } from '@mui/material/colors';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
@@ -78,10 +79,9 @@ const ScanResults = () => {
 					alignItems: 'flex-end',
 					width: '100vw',
 					backgroundColor: 'primary.dark',
-					height: '150px',
+					// height: '150px',
 					boxSizing: 'border-box',
-					padding: '30px',
-					mb: '3vh'
+					padding: '30px'
 				}}
 			>
 				<Box>
@@ -89,8 +89,11 @@ const ScanResults = () => {
 						{' '}
 						NEW SUBSCRIPTIONS
 					</Typography>
-					<Typography color="white" variant="button" component="h6">
-						Last synced: {lastSyncedDate || '-'}
+					<Typography color="white" variant="button" component="div">
+						Last synced:{' '}
+						<Typography variant="h6" component="span" sx={{ ml: '10px', color: 'secondary.main' }}>
+							{lastSyncedDate || '-'}
+						</Typography>
 					</Typography>
 				</Box>
 				<Button
@@ -103,13 +106,23 @@ const ScanResults = () => {
 					BACK TO HOME
 				</Button>
 			</Box>
-			{thereAreNewSubscriptions ? (
-				<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
-					{newSubscriptionList}
-				</Grid>
-			) : (
-				'No new subscriptions found.'
-			)}
+			<Box
+				sx={{
+					backgroundColor: 'primary.light',
+					backgroundOrigin: 'border-box',
+					height: '100vh'
+				}}
+			>
+				{thereAreNewSubscriptions ? (
+					<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
+						{newSubscriptionList}
+					</Grid>
+				) : (
+					<Box sx={{ textAlign: 'center', p: '30px' }}>
+						<Typography variant="h5">No new subscriptions found.</Typography>
+					</Box>
+				)}
+			</Box>
 		</React.Fragment>
 	);
 };
