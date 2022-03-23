@@ -95,7 +95,6 @@ const Home = () => {
 							p: '5vh 0',
 							backgroundColor: 'primary.light',
 							backgroundOrigin: 'border-box',
-
 							display: 'flex',
 							flexDirection: 'column',
 							alignItems: 'center'

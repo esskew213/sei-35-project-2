@@ -31,7 +31,15 @@ const SubscriptionItem = ({ subscription }) => {
 		await getSubscriptions();
 	};
 	return (
-		<Card sx={{ width: '60vw', maxWidth: '500px', backgroundColor: '#F5F5F5', padding: '0 2vw' }}>
+		<Card
+			sx={{
+				width: '60vw',
+				boxSizing: 'border-box',
+				maxWidth: '500px',
+				backgroundColor: '#F5F5F5',
+				padding: '0 2vw'
+			}}
+		>
 			<CardContent>
 				<Typography variant="h4" sx={{ color: 'primary.dark' }} gutterBottom>
 					{subscription.name}

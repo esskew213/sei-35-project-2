@@ -94,7 +94,13 @@ const DraftNewSub = ({
 								Is this a subscription?
 							</Typography>
 							<EmailPopover>
-								<iframe sandbox width={400} height={300} srcDoc={messageHtml} title="message-display" />
+								<iframe
+									sandbox={null}
+									width={400}
+									height={300}
+									srcDoc={messageHtml}
+									title="message-display"
+								/>
 							</EmailPopover>
 						</Box>
 						<Divider />

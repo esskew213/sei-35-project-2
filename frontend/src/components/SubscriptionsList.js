@@ -27,8 +27,8 @@ const SubscriptionsList = () => {
 		setDisplayedSubs((prevState) => sortByBillingDate(JSON.parse(JSON.stringify(prevState))));
 	};
 	return (
-		<Box sx={{ width: '60vw', maxWidth: '500px', position: 'relative' }}>
-			<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
+		<Box sx={{ width: '60vw', maxWidth: '500px' }}>
+			<Grid container rowSpacing={2} direction="column" justifyContent="flex-start" alignItems="center">
 				<Grid item sx={{ alignSelf: 'flex-end' }}>
 					<Button
 						color="secondary"
@@ -42,7 +42,7 @@ const SubscriptionsList = () => {
 					</Button>
 				</Grid>
 				{toDisplay.map((subscription, idx) => (
-					<Grid item xl={6} lg={6} md={8} sm={8} xs={12} key={idx}>
+					<Grid item xl={8} lg={8} md={8} sm={8} xs={12} key={idx}>
 						<SubscriptionItem subscription={subscription} />
 					</Grid>
 				))}

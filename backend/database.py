@@ -1,7 +1,9 @@
-from sqlalchemy import create_engine
+from datetime import date
+
+from sqlalchemy import create_engine, desc
 from sqlalchemy.orm import sessionmaker
 
-from db_models import User, Base, Subscription, GmailCredentials
+from db_models import User, Base, Subscription, GmailCredentials, LastSynced
 
 DATABASE_URI = 'postgresql://sarahqtw:sei35project2@localhost/sei35project2'
 engine = create_engine(DATABASE_URI, echo=True)
@@ -72,3 +74,17 @@ def delete_subscription(subscription_id: int):
     session.query(Subscription).filter_by(id=subscription_id).delete()
     session.commit()
     session.close()
+
+
+def add_sync_date(last_synced_date: LastSynced):
+    session = SessionLocal()
+    session.add(last_synced_date)
+    session.commit()
+    session.close()
+
+
+def get_last_synced(user_id: str):
+    session = SessionLocal()
+    last_synced_date = session.query(LastSynced.last_synced_date).filter_by(user_id=user_id).order_by(LastSynced.last_synced_date.desc()).first()
+    session.close()
+    return last_synced_date

@@ -8,9 +8,10 @@ import EmailPopover from '../components/EmailPopover';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
+	const [ lastSyncedDate, setLastSyncedDate ] = useState('');
 	const [ draftNewSubs, setDraftNewSubs ] = useState([]);
 	const [ messageHtml, setMessageHtml ] = useState('');
-
+	const [ thereAreNewSubscriptions, setThereAreNewSubscriptions ] = useState(true);
 	// const { isLoggedIn } = useContext(IsLoggedInContext);
 	// console.log('ON SCAN PAGE, LOGGED IN:', isLoggedIn);
 	const navigate = useNavigate();
@@ -22,13 +23,27 @@ const ScanResults = () => {
 				const response = await client.get('http://127.0.0.1:8000/fetch_new_subscriptions', {
 					headers: { authorization: localStorage.token }
 				});
-				console.log(response.data.scanList);
-				console.log(response.data.scanList[0].messageHtml);
-				setMessageHtml(response.data.scanList[0].messageHtml);
-				const tentativeNewSubscriptions = response.data.scanList;
-				setDraftNewSubs(tentativeNewSubscriptions);
+				if (response.data.scanList[0].name === 'no new subscriptions') {
+					setThereAreNewSubscriptions(false);
+				} else {
+					console.log(response.data.scanList);
+					setMessageHtml(response.data.scanList[0].messageHtml);
+					const tentativeNewSubscriptions = response.data.scanList;
+					setDraftNewSubs(tentativeNewSubscriptions);
+				}
+			};
+			const getLastSynced = async () => {
+				console.log('gmail api is being called');
+				const client = applyCaseMiddleware(axios.create());
+				const response = await client.get('http://127.0.0.1:8000/get_last_synced_date', {
+					headers: { authorization: localStorage.token }
+				});
+				if (response.data.lastSyncedDate) {
+					setLastSyncedDate(response.data.lastSyncedDate);
+				}
 			};
 			getNewSubscriptions();
+			getLastSynced();
 			setIsScanning(false);
 			console.log(messageHtml ? messageHtml : 'no HTML');
 		}
@@ -69,10 +84,15 @@ const ScanResults = () => {
 					mb: '3vh'
 				}}
 			>
-				<Typography color="white" variant="h4">
-					{' '}
-					NEW SUBSCRIPTIONS
-				</Typography>
+				<Box>
+					<Typography color="white" variant="h4" gutterBottom>
+						{' '}
+						NEW SUBSCRIPTIONS
+					</Typography>
+					<Typography color="white" variant="button" component="h6">
+						Last synced: {lastSyncedDate || '-'}
+					</Typography>
+				</Box>
 				<Button
 					variant="contained"
 					color="secondary"
@@ -83,10 +103,13 @@ const ScanResults = () => {
 					BACK TO HOME
 				</Button>
 			</Box>
-
-			<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
-				{newSubscriptionList}
-			</Grid>
+			{thereAreNewSubscriptions ? (
+				<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
+					{newSubscriptionList}
+				</Grid>
+			) : (
+				'No new subscriptions found.'
+			)}
 		</React.Fragment>
 	);
 };

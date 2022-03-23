@@ -16,6 +16,7 @@ class User(Base):
 
     subscriptions = relationship("Subscription", back_populates="subscriber")
     gmail_credentials = relationship("GmailCredentials", back_populates="user")
+    last_synced = relationship("LastSynced", back_populates="user")
 
 
 class Subscription(Base):
@@ -39,3 +40,13 @@ class GmailCredentials(Base):
     credentials_pickle = Column(LargeBinary)
 
     user = relationship("User", back_populates="gmail_credentials")
+
+
+class LastSynced(Base):
+    __tablename__ = 'last_synced'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    last_synced_date = Column(Date)
+    user_id = Column(String, ForeignKey('users.id'))
+
+    user = relationship("User", back_populates="last_synced")

@@ -74,3 +74,7 @@ class ScanResultsIOModel(BaseModel):
 
 class ScanListIOModel(BaseModel):
     scan_list: list[ScanResultsIOModel]
+
+
+class LastSyncedDateIOModel(BaseModel):
+    last_synced_date: date
