@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import useInputState from '../hooks/setInputState';
 import {
+	Typography,
+	Divider,
 	TextField,
 	FormControl,
 	InputLabel,
@@ -8,9 +10,9 @@ import {
 	MenuItem,
 	Button,
 	InputAdornment,
-	IconButton
+	Box
 } from '@mui/material';
-
+import DoneIcon from '@mui/icons-material/Done';
 import TableDatePicker from './TableDatePicker';
 import { useContext } from 'react';
 import axios from 'axios';
@@ -20,12 +22,11 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 	const { getSubscriptions } = useContext(SubscriptionsContext);
 
 	// using a custom hook for all input fields EXCEPT date, which uses react date picker
-	const [ name, handleNameChange, resetName ] = useInputState('');
-	const [ price, handlePriceChange, resetPrice ] = useInputState('');
-	const [ recurs, handleRecursChange, resetRecurs ] = useInputState('');
-	const [ startDate, setStartDate ] = useState(new Date());
+	const [ name, handleNameChange, resetName ] = useInputState(subscription ? subscription.name : '');
+	const [ price, handlePriceChange, resetPrice ] = useInputState(subscription ? subscription.priceInDollars : '');
+	const [ recurs, handleRecursChange, resetRecurs ] = useInputState(subscription ? subscription.recurs : 'NEVER');
+	const [ startDate, setStartDate ] = useState(subscription ? new Date(subscription.dateStarted) : new Date());
 	const handleStartDateChange = (date) => {
-		console.log(date);
 		setStartDate(date);
 	};
 
@@ -45,65 +46,132 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 				headers: { authorization: localStorage.token }
 			});
 		} else {
-			await client.post('http://127.0.0.1:8000/add_subscription', newSubscription, {
-				headers: { authorization: localStorage.token }
-			});
+			// sending in as a list in case there is more than one subscription
+			await client.post(
+				'http://127.0.0.1:8000/add_subscriptions',
+				{ subscriptions: [ newSubscription ] },
+				{
+					headers: { authorization: localStorage.token }
+				}
+			);
 		}
 		await getSubscriptions();
-		if (handleCloseModal) {
-			handleCloseModal();
-		}
+
 		setStartDate(new Date());
 		resetPrice();
 		resetName();
 		resetRecurs();
+		if (handleCloseModal) {
+			handleCloseModal();
+		}
 	};
 	return (
-		<form>
-			<TextField
-				variant="standard"
-				size="small"
-				label="Subscription name"
-				type="text"
-				value={name}
-				onChange={handleNameChange}
-				required
-			/>
-
-			<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} required>
-				<TextField
-					variant="standard"
-					size="small"
-					id="price"
-					label="Price"
-					type="number"
-					value={price}
-					onChange={handlePriceChange}
-					min="0"
-					required
-					step="0.01"
-					InputProps={{
-						startAdornment: <InputAdornment position="start">$</InputAdornment>,
-						inputProps: { min: 0, step: 0.01 }
+		<form onSubmit={handleSubmit}>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'flex-start',
+					width: '40vw',
+					maxWidth: '500px'
+				}}
+			>
+				<Typography
+					sx={{ color: 'primary.dark', fontSize: '1.1rem', alignSelf: 'center' }}
+					gutterBottom
+					variant="button"
+					component="h6"
+				>
+					{subscription ? 'Edit subscription' : 'Add a subscription'}
+				</Typography>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						justifyContent: 'center',
+						mb: '10px'
 					}}
-				/>
-			</FormControl>
+				>
+					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '200px' }}>
+						<TextField
+							variant="standard"
+							size="small"
+							label="Subscription name"
+							type="text"
+							value={name}
+							onChange={handleNameChange}
+							required
+							autoFocus
+							placeholder="e.g. cold brew coffee"
+						/>
+					</FormControl>
+					<FormControl variant="standard" margin="dense" required sx={{ width: '100px' }}>
+						<TextField
+							variant="standard"
+							size="small"
+							id="price"
+							label="Price"
+							type="number"
+							value={price}
+							onChange={handlePriceChange}
+							min="0"
+							required
+							placeholder="0.00"
+							step="0.01"
+							InputProps={{
+								startAdornment: <InputAdornment position="start">$</InputAdornment>,
+								inputProps: { min: 0, step: 0.01 }
+							}}
+						/>
+					</FormControl>
+				</Box>
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'row',
+						flexWrap: 'wrap',
+						justifyContent: 'flex-start',
+						alignItems: 'flex-end',
+						mb: '10px'
+					}}
+				>
+					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+						<InputLabel htmlFor="recurs">Recurs</InputLabel>
+						<Select id="recurs" margin="dense" value={recurs} onChange={handleRecursChange} label="Recurs">
+							<MenuItem value="NEVER">Never</MenuItem>
+							<MenuItem value={'WEEKLY'}>Weekly</MenuItem>
+							<MenuItem value={'MONTHLY'}>Monthly</MenuItem>
+							<MenuItem value={'YEARLY'}>Yearly</MenuItem>
+						</Select>
+					</FormControl>
 
-			<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} required>
-				<InputLabel htmlFor="recurs">Recurs</InputLabel>
-				<Select id="recurs" value={recurs} onChange={handleRecursChange} label="Recurs">
-					<MenuItem value="NEVER">
-						<em>Never</em>
-					</MenuItem>
-					<MenuItem value={'WEEKLY'}>Weekly</MenuItem>
-					<MenuItem value={'MONTHLY'}>Monthly</MenuItem>
-					<MenuItem value={'YEARLY'}>Yearly</MenuItem>
-				</Select>
-			</FormControl>
-			<TableDatePicker date={startDate} onInputChange={handleStartDateChange} />
-			<Button onClick={handleSubmit} variant="contained">
-				SUBMIT
-			</Button>
+					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+						<TableDatePicker id="start-date" date={startDate} onInputChange={handleStartDateChange} />
+					</FormControl>
+				</Box>
+			</Box>
+			<Divider />
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'row',
+					alignItems: 'baseline',
+					justifyContent: 'flex-end',
+					flexWrap: 'wrap'
+				}}
+			>
+				<Button
+					size="small"
+					type="submit"
+					color="success"
+					variant="contained"
+					sx={{ mt: '15px' }}
+					endIcon={<DoneIcon />}
+				>
+					SUBMIT
+				</Button>
+			</Box>
 		</form>
 	);
 };

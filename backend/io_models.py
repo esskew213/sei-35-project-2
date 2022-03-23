@@ -1,5 +1,5 @@
 import logging
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from decimal import Decimal
 from enum import Enum
 from typing import Optional
@@ -44,9 +44,10 @@ def next_billing_date(date_started: date, recurs: RecursFreq) -> Optional[date]:
     if recurs is RecursFreq.NEVER:
         return None
     elif recurs is RecursFreq.WEEKLY:
-        delta_to_bill = relativedelta(weeks=(delta_since_started.weeks + 1))
+        delta_to_bill = relativedelta(weeks=(delta_since_started.weeks * (delta_since_started.years + 1) * (delta_since_started.months + 1) + 1))
     elif recurs is RecursFreq.MONTHLY:
-        delta_to_bill = relativedelta(months=(delta_since_started.months + 1))
+        months = delta_since_started.months * (delta_since_started.years + 1) + 1
+        delta_to_bill = relativedelta(months=months)
     elif recurs is RecursFreq.YEARLY:
         delta_to_bill = relativedelta(years=(delta_since_started.years + 1))
     else:
@@ -55,7 +56,21 @@ def next_billing_date(date_started: date, recurs: RecursFreq) -> Optional[date]:
     return delta_to_bill + date_started
 
 
+class SubsListIOModel(BaseModel):
+    subscriptions: list[SubscriptionIOModel]
+
+
 class UserIOModel(BaseModel):
     id: constr(min_length=1)
     name: constr(min_length=1)
     photo_url: constr(min_length=1)
+
+
+class ScanResultsIOModel(BaseModel):
+    date_started: Optional[date]
+    name: constr(strip_whitespace=True, min_length=1)
+    message_html: Optional[str]
+
+
+class ScanListIOModel(BaseModel):
+    scan_list: list[ScanResultsIOModel]

@@ -1,6 +1,6 @@
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import NewSubscriptionForm from './NewSubscriptionForm';
 const FormModal = ({ modalOpen, handleCloseModal, subscription = null }) => {
 	const style = {
@@ -8,22 +8,22 @@ const FormModal = ({ modalOpen, handleCloseModal, subscription = null }) => {
 		top: '50%',
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
-		width: 400,
+		width: '60vw',
+		maxWidth: '600px',
 		bgcolor: 'background.paper',
-		border: '2px solid #000',
 		boxShadow: 24,
-		p: 4
+		borderRadius: '20px',
+		py: 2,
+		px: 1,
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center'
 	};
 
 	return (
 		<div>
-			<Modal
-				open={modalOpen}
-				onClose={handleCloseModal}
-				aria-labelledby="modal-modal-title"
-				aria-describedby="modal-modal-description"
-				keepMounted
-			>
+			<Modal open={modalOpen} onClose={handleCloseModal}>
 				<Box sx={style}>
 					<NewSubscriptionForm handleCloseModal={handleCloseModal} subscription={subscription} />
 				</Box>

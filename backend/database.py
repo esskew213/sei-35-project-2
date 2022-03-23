@@ -48,7 +48,7 @@ def write_gmail_credentials(credentials: GmailCredentials):
 
 def get_gmail_credentials(user: User):
     session = SessionLocal()
-    credentials = session.query(GmailCredentials.user_id).filter_by(id=user.id)
+    credentials = session.query(GmailCredentials).filter_by(user_id=user.id).first()
     session.close()
     return credentials
 
