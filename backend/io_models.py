@@ -44,7 +44,7 @@ def next_billing_date(date_started: date, recurs: RecursFreq) -> Optional[date]:
     if recurs is RecursFreq.NEVER:
         return None
     elif recurs is RecursFreq.WEEKLY:
-        delta_to_bill = relativedelta(weeks=(delta_since_started.weeks * delta_since_started.years * delta_since_started.months + 1))
+        delta_to_bill = relativedelta(weeks=(delta_since_started.weeks * (delta_since_started.years + 1) * (delta_since_started.months + 1) + 1))
     elif recurs is RecursFreq.MONTHLY:
         months = delta_since_started.months * (delta_since_started.years + 1) + 1
         delta_to_bill = relativedelta(months=months)

@@ -1,6 +1,6 @@
 from googleapiclient.discovery import build
 import re
-from datetime import datetime
+from datetime import datetime, date
 from db_models import User
 from google_auth import get_and_refresh_credentials
 import base64
@@ -14,7 +14,7 @@ def get_message_subjects(user: User):
     # Get the message ids of possible subscriptions
     response = service.users().messages().list(
         userId='me',
-        maxResults=2,
+        maxResults=5,
         q='+subscribing OR +subscription {confirmation OR payment OR charge OR bill OR receipt} -newsletter  -"manage your" -"email preferences" -"unsubscribe from" -"discount" -"offer" -"been cancelled" -"been canceled" -"have canceled" -"have cancelled" -"will be cancelled"',
         includeSpamTrash=False
     ).execute()
@@ -27,31 +27,36 @@ def get_message_subjects(user: User):
         message_payload = message_full["payload"]
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(message_payload)
-        message_body_encoded = message_payload["parts"][1]["body"]["data"]
-        message_padded = message_body_encoded + (4 - len(message_body_encoded) % 4)*'='
-        message_body_b64 = base64.urlsafe_b64decode(message_padded.encode('ascii'))
-        message_body_html = message_body_b64.decode('unicode_escape')
 
-        re_html = re.search(r'(?s)<html>(.*)</html>', message_body_html, re.M)
-        if re_html is not None:
-            message_info['message_html'] = re_html.group(1)
-        else:
-            message_info['message_html'] = message_body_html
+        try:
+            message_body_encoded = message_payload["parts"][1]["body"]["data"]
+            message_padded = message_body_encoded + (4 - len(message_body_encoded) % 4)*'='
+            message_body_b64 = base64.urlsafe_b64decode(message_padded.encode('ascii'))
+            message_body_html = message_body_b64.decode('unicode_escape')
+            message_info['message_html'] = message_body_html.replace('"', '&quot;')
 
-            # pp.pprint(re.search(r'(Sent)', message_body_decoded, re.M))
+        except Exception:
+            message_info['message_html'] = '<div>No information available.</div>'
+
         message_headers = message_payload["headers"]
         for message_header in message_headers:
+
             if message_header['name'] == 'From':
-                re_name = re.match(r'(.*)\s[<]', message_header['value'])
-                message_info['name'] = re_name.group(1)
+                try:
+                    re_name = re.match(r'(.*)\s[<]', message_header['value'])
+                    message_info['name'] = re_name.group(1)
+                except Exception:
+                    message_info['name'] = 'no name found'
 
             elif message_header['name'] == 'Date':
-                print(message_header['value'])
+                try:
                 #TODO: fix some dates can't print
-                # re_date = re.match(r'[0-9]+\s[a-zA-Z]{3}\s[0-9]{4}', message_header['value'])
-                # print(re_date)
-                # message_info['date_started'] = datetime.strptime(message_header['value'], "%a, %d %b %Y %H:%M:%S %z").date()
-                message_info['date_started'] = dateparser.parse(message_header['value']).date()
+                    re_date = re.search(r'[0-9]+\s[a-zA-Z]{3}\s[0-9]{4}', message_header['value'])
+                    print(re_date)
+                    message_info['date_started'] = dateparser.parse(re_date.group(0)).date()
+                except Exception:
+                    message_info['date_started'] = date.today()
+
         all_messages_info.append(message_info)
         pp.pprint(all_messages_info)
 
@@ -63,5 +68,5 @@ def get_message_subjects(user: User):
 
 #
 # import database as db
-# user = db.get_user(user_id="108090992261441832535")
+# user = db.get_user(user_id="106457933112770779046")
 # get_message_subjects(user)
