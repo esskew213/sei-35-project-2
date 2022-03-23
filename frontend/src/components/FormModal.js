@@ -17,8 +17,8 @@ const FormModal = ({ modalOpen, handleCloseModal, subscription = null }) => {
 		px: 1,
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center',
-		justifyContent: 'center'
+		alignItems: 'center'
+		// justifyContent: 'center'
 	};
 
 	return (

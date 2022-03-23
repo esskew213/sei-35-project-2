@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,600;1,200&display=swap');
+
+.react-datepicker__input-container input {
+	border: none;
+	font-size: 1rem;
+	color: #616161;
+	border-bottom: 1px solid grey;
+	width: 110px;
+	font-family: 'Raleway', sans-serif;
+}
+.react-datepicker__input-container span {
+	font-family: 'Raleway', sans-serif;
+}
+
+.react-datepicker__navigation-icon::before {
+	border-color: #37474f;
+}
+.react-datepicker {
+	border: 1px solid #b0bec5;
+	font-family: 'Raleway', sans-serif;
+	color: #37474f;
+}
+
+.react-datepicker__header {
+	background-color: #ffca28;
+	color: #37474f;
+}
+.react-datepicker__current-month {
+	color: #37474f;
+}

@@ -72,6 +72,7 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'flex-start',
+					flexWrap: 'wrap',
 					width: '40vw',
 					maxWidth: '500px'
 				}}
@@ -89,11 +90,12 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 						display: 'flex',
 						flexDirection: 'row',
 						flexWrap: 'wrap',
-						justifyContent: 'center',
-						mb: '10px'
+						justifyContent: 'space-between',
+						mb: '10px',
+						width: '100%'
 					}}
 				>
-					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '200px' }}>
+					<FormControl sx={{ maxWidth: '200px' }} variant="standard" margin="dense" required>
 						<TextField
 							variant="standard"
 							size="small"
@@ -104,9 +106,10 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 							required
 							autoFocus
 							placeholder="e.g. cold brew coffee"
+							sx={{ minWidth: '100px' }}
 						/>
 					</FormControl>
-					<FormControl variant="standard" margin="dense" required sx={{ width: '100px' }}>
+					<FormControl variant="standard" margin="dense" sx={{ maxWidth: '200px' }} required>
 						<TextField
 							variant="standard"
 							size="small"
@@ -123,6 +126,7 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 								startAdornment: <InputAdornment position="start">$</InputAdornment>,
 								inputProps: { min: 0, step: 0.01 }
 							}}
+							sx={{ width: '100px' }}
 						/>
 					</FormControl>
 				</Box>
@@ -131,9 +135,10 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 						display: 'flex',
 						flexDirection: 'row',
 						flexWrap: 'wrap',
-						justifyContent: 'flex-start',
+						justifyContent: 'space-between',
 						alignItems: 'flex-end',
-						mb: '10px'
+						mb: '10px',
+						width: '100%'
 					}}
 				>
 					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
