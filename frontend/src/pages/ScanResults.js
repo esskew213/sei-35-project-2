@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Button, Box } from '@mui/material';
 import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
-import EmailPopover from '../components/EmailPopover';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
@@ -12,8 +11,7 @@ const ScanResults = () => {
 	const [ draftNewSubs, setDraftNewSubs ] = useState([]);
 	const [ messageHtml, setMessageHtml ] = useState('');
 	const [ thereAreNewSubscriptions, setThereAreNewSubscriptions ] = useState(true);
-	// const { isLoggedIn } = useContext(IsLoggedInContext);
-	// console.log('ON SCAN PAGE, LOGGED IN:', isLoggedIn);
+
 	const navigate = useNavigate();
 	useEffect(() => {
 		if (isScanning) {
@@ -78,12 +76,12 @@ const ScanResults = () => {
 					alignItems: 'flex-end',
 					width: '100vw',
 					backgroundColor: 'primary.dark',
-					// height: '150px',
+					height: '200px',
 					boxSizing: 'border-box',
 					padding: '30px'
 				}}
 			>
-				<Box>
+				<Box sx={{ mb: '5vh' }}>
 					<Typography color="white" variant="h4" gutterBottom>
 						{' '}
 						NEW SUBSCRIPTIONS
@@ -95,9 +93,11 @@ const ScanResults = () => {
 						</Typography>
 					</Typography>
 				</Box>
+
 				<Button
 					variant="contained"
 					color="secondary"
+					sx={{ mb: '5vh' }}
 					onClick={() => {
 						navigate('/home');
 					}}
@@ -109,7 +109,9 @@ const ScanResults = () => {
 				sx={{
 					backgroundColor: 'primary.light',
 					backgroundOrigin: 'border-box',
-					height: '100vh'
+					minHeight: 'calc(100vh - 200px)',
+					height: '100%',
+					paddingBottom: '5vh'
 				}}
 			>
 				{thereAreNewSubscriptions ? (

@@ -18,7 +18,7 @@ const SubscriptionsList = () => {
 			if (subscriptions) {
 				console.log(subscriptions);
 				const subscriptions_copy = JSON.parse(JSON.stringify(subscriptions));
-				setDisplayedSubs(subscriptions_copy);
+				setDisplayedSubs(sortByBillingDate(subscriptions_copy));
 			}
 		},
 		[ subscriptions ]
@@ -77,8 +77,18 @@ const SubscriptionsList = () => {
 					</Grid>
 				</Box>
 			) : (
-				<Box sx={{ textAlign: 'center', p: '30px' }}>
-					<Typography variant="h5">No subscriptions found.</Typography>
+				<Box sx={{ textAlign: 'center', p: '30px', width: '50vw' }}>
+					<Typography variant="h6">
+						No subscriptions found. Try{' '}
+						<Typography variant="h6" component="span" sx={{ color: 'primary.dark' }}>
+							syncing
+						</Typography>{' '}
+						or{' '}
+						<Typography variant="h6" component="span" sx={{ color: 'secondary.dark' }}>
+							adding{' '}
+						</Typography>
+						a subscription!
+					</Typography>
 				</Box>
 			)}
 		</React.Fragment>

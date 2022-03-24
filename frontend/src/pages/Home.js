@@ -91,7 +91,8 @@ const Home = () => {
 					</Box>
 					<Box
 						sx={{
-							height: '100vh',
+							minHeight: 'calc(100vh - 200px)',
+							height: '100%',
 							p: '5vh 0',
 							backgroundColor: 'primary.light',
 							backgroundOrigin: 'border-box',
