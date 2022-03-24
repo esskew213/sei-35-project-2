@@ -1,6 +1,6 @@
-# SEI-35 PROJECT 2
+# subSCRIBD
 ### Description
-A toy app to help users find and track their subscriptions in one place. It uses the Gmail API to to extract emails related to subscriptions from the user's inbox. The information is stored in a database so that it persists across sessions.
+Proof-of-concept for an app to help users find and track their subscriptions in one place. It uses the Gmail API to to extract emails related to subscriptions from the user's inbox. The information is stored in a database so that it persists across sessions.
 
 As there are security issues that have yet to be resolved, this app only runs locally on my computer at the moment. I hope to deploy it online in future.
 
