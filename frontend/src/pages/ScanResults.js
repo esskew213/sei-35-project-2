@@ -4,6 +4,7 @@ import DraftNewSub from '../components/DraftNewSub';
 import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);
@@ -13,59 +14,41 @@ const ScanResults = () => {
 	const [ thereAreNewSubscriptions, setThereAreNewSubscriptions ] = useState(true);
 
 	const navigate = useNavigate();
+
 	useEffect(() => {
-		if (isScanning) {
-			const getNewSubscriptions = async () => {
-				console.log('gmail api is being called');
-				const client = applyCaseMiddleware(axios.create());
-				const response = await client.get('http://127.0.0.1:8000/fetch_new_subscriptions', {
-					headers: { authorization: localStorage.token }
-				});
-				if (response.data.scanList[0].name === 'no new subscriptions') {
-					setThereAreNewSubscriptions(false);
-				} else {
-					console.log(response.data.scanList);
-					setMessageHtml(response.data.scanList[0].messageHtml);
-					const tentativeNewSubscriptions = response.data.scanList;
-					setDraftNewSubs(tentativeNewSubscriptions);
-				}
-			};
-			const getLastSynced = async () => {
-				console.log('gmail api is being called');
-				const client = applyCaseMiddleware(axios.create());
-				const response = await client.get('http://127.0.0.1:8000/get_last_synced_date', {
-					headers: { authorization: localStorage.token }
-				});
-				if (response.data.lastSyncedDate) {
-					setLastSyncedDate(response.data.lastSyncedDate);
-				}
-			};
-			getNewSubscriptions();
-			getLastSynced();
-			setIsScanning(false);
-			console.log(messageHtml ? messageHtml : 'no HTML');
-		}
+		const getNewSubscriptions = async () => {
+			const client = applyCaseMiddleware(axios.create());
+			const response = await client.get('http://127.0.0.1:8000/fetch_new_subscriptions', {
+				headers: { authorization: localStorage.token }
+			});
+			if (response.data.scanList[0].name === 'no new subscriptions') {
+				setThereAreNewSubscriptions(false);
+			} else {
+				setMessageHtml(response.data.scanList[0].messageHtml);
+				const tentativeNewSubscriptions = response.data.scanList;
+				setDraftNewSubs(tentativeNewSubscriptions);
+			}
+		};
+		const getLastSynced = async () => {
+			const client = applyCaseMiddleware(axios.create());
+			const response = await client.get('http://127.0.0.1:8000/get_last_synced_date', {
+				headers: { authorization: localStorage.token }
+			});
+			if (response.data.lastSyncedDate) {
+				setLastSyncedDate(response.data.lastSyncedDate);
+			}
+		};
+		getNewSubscriptions();
+		getLastSynced();
+		setIsScanning(false);
+		console.log(messageHtml ? messageHtml : 'no HTML');
 	}, []);
 
 	const handleDelete = (idxToDel) => {
 		console.log('deleting ', idxToDel);
 		setDraftNewSubs((draftNewSubs) => draftNewSubs.filter((sub, idx) => idx !== idxToDel));
 	};
-	const newSubscriptionList = draftNewSubs.map((sub, index) => {
-		console.log('adding', index, sub);
-		return (
-			<DraftNewSub
-				key={index}
-				idx={index}
-				newName={sub.name}
-				newDateStarted={sub.dateStarted}
-				newPriceInDollars={sub.priceInDollars}
-				newRecurs={sub.recurs}
-				handleDelete={handleDelete}
-				messageHtml={sub.messageHtml}
-			/>
-		);
-	});
+
 	return (
 		<React.Fragment>
 			<Box
@@ -114,9 +97,25 @@ const ScanResults = () => {
 					paddingBottom: '5vh'
 				}}
 			>
-				{thereAreNewSubscriptions ? (
+				{isScanning ? (
+					<Loader />
+				) : thereAreNewSubscriptions ? (
 					<Grid container spacing={2} direction="column" justifyContent="flex-start" alignItems="center">
-						{newSubscriptionList}
+						{draftNewSubs.map((sub, index) => {
+							console.log('adding', index, sub);
+							return (
+								<DraftNewSub
+									key={index}
+									idx={index}
+									newName={sub.name}
+									newDateStarted={sub.dateStarted}
+									newPriceInDollars={sub.priceInDollars}
+									newRecurs={sub.recurs}
+									handleDelete={handleDelete}
+									messageHtml={sub.messageHtml}
+								/>
+							);
+						})}
 					</Grid>
 				) : (
 					<Box sx={{ textAlign: 'center', p: '30px' }}>

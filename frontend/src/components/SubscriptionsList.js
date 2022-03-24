@@ -4,8 +4,10 @@ import { Grid, Box, Button, Typography, Select, FormControl, InputLabel, MenuIte
 import { SubscriptionsContext } from '../context/Subscriptions.context';
 import { sortByBillingDate, sortByName, sortByPrice, sortByDateStarted } from '../utils/sortFunctions';
 import SortIcon from '@mui/icons-material/Sort';
+import Loader from './Loader';
+
 const SubscriptionsList = () => {
-	const { subscriptions, getSubscriptions } = useContext(SubscriptionsContext);
+	const { subscriptions, getSubscriptions, isLoading } = useContext(SubscriptionsContext);
 	const [ displayedSubs, setDisplayedSubs ] = useState('');
 
 	console.log(displayedSubs);
@@ -47,7 +49,9 @@ const SubscriptionsList = () => {
 	};
 	return (
 		<React.Fragment>
-			{toDisplay.length > 0 ? (
+			{isLoading ? (
+				<Loader />
+			) : toDisplay.length > 0 ? (
 				<Box sx={{ width: '60vw', maxWidth: '500px' }}>
 					<Grid container rowSpacing={2} direction="column" justifyContent="flex-start" alignItems="center">
 						<Grid item sx={{ alignSelf: 'flex-end' }}>
