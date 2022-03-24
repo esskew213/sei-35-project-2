@@ -16,7 +16,8 @@ import {
 	Button,
 	InputAdornment,
 	Box,
-	Divider
+	Divider,
+	FormLabel
 } from '@mui/material';
 import TableDatePicker from './TableDatePicker';
 import axios from 'axios';
@@ -171,6 +172,7 @@ const DraftNewSub = ({
 								</Select>
 							</FormControl>
 							<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+								<FormLabel sx={{ fontSize: '0.8rem', mb: '5px' }}>Start date</FormLabel>
 								<TableDatePicker
 									id="start-date"
 									date={startDate}

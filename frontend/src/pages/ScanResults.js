@@ -5,7 +5,6 @@ import axios from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 import { useNavigate } from 'react-router-dom';
 import EmailPopover from '../components/EmailPopover';
-import { deepPurple } from '@mui/material/colors';
 
 const ScanResults = () => {
 	const [ isScanning, setIsScanning ] = useState(true);

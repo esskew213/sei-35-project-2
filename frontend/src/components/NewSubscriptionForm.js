@@ -10,7 +10,8 @@ import {
 	MenuItem,
 	Button,
 	InputAdornment,
-	Box
+	Box,
+	FormLabel
 } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import TableDatePicker from './TableDatePicker';
@@ -152,6 +153,7 @@ const NewSubscriptionForm = ({ handleCloseModal = null, subscription = null }) =
 					</FormControl>
 
 					<FormControl variant="standard" margin="dense" required sx={{ minWidth: '100px' }}>
+						<FormLabel sx={{ fontSize: '0.8rem', mb: '5px' }}>Start date</FormLabel>
 						<TableDatePicker id="start-date" date={startDate} onInputChange={handleStartDateChange} />
 					</FormControl>
 				</Box>

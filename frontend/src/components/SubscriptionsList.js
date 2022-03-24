@@ -1,12 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import SubscriptionItem from './SubscriptionItem';
-import { Grid, Box, Button, Typography } from '@mui/material';
+import { Grid, Box, Button, Typography, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 import { SubscriptionsContext } from '../context/Subscriptions.context';
 import { sortByBillingDate, sortByName, sortByPrice, sortByDateStarted } from '../utils/sortFunctions';
 import SortIcon from '@mui/icons-material/Sort';
 const SubscriptionsList = () => {
 	const { subscriptions, getSubscriptions } = useContext(SubscriptionsContext);
 	const [ displayedSubs, setDisplayedSubs ] = useState('');
+
 	console.log(displayedSubs);
 	useEffect(() => {
 		getSubscriptions();
@@ -23,9 +24,26 @@ const SubscriptionsList = () => {
 		[ subscriptions ]
 	);
 	const toDisplay = displayedSubs ? displayedSubs : subscriptions;
-	// console.log(typeof subscriptions[0].nextBillingDate);
-	const handleSortByBillingDate = () => {
-		setDisplayedSubs((prevState) => sortByBillingDate(JSON.parse(JSON.stringify(prevState))));
+
+	const handleSortByChange = (evt) => {
+		const sortBy = evt.target.value;
+		const displayedSubsCopy = JSON.parse(JSON.stringify(displayedSubs));
+		switch (sortBy) {
+			case 'NEXTBILLINGDATE':
+				setDisplayedSubs(sortByBillingDate(displayedSubsCopy));
+				break;
+			case 'NAME':
+				setDisplayedSubs(sortByName(displayedSubsCopy));
+				break;
+			case 'COST':
+				setDisplayedSubs(sortByPrice(displayedSubsCopy));
+				break;
+			case 'STARTDATE':
+				setDisplayedSubs(sortByDateStarted(displayedSubsCopy));
+				break;
+			default:
+				throw new Error();
+		}
 	};
 	return (
 		<React.Fragment>
@@ -33,16 +51,23 @@ const SubscriptionsList = () => {
 				<Box sx={{ width: '60vw', maxWidth: '500px' }}>
 					<Grid container rowSpacing={2} direction="column" justifyContent="flex-start" alignItems="center">
 						<Grid item sx={{ alignSelf: 'flex-end' }}>
-							<Button
-								color="secondary"
-								variant="outlined"
-								size="small"
-								margin="dense"
-								onClick={handleSortByBillingDate}
-								endIcon={<SortIcon />}
-							>
-								SORT
-							</Button>
+							<FormControl variant="filled" margin="dense" size="small" sx={{ minWidth: '100px' }}>
+								<InputLabel htmlFor="sort-by" shrink>
+									Sort by
+								</InputLabel>
+								<Select
+									id="sort-by"
+									margin="dense"
+									defaultValue="NEXTBILLINGDATE"
+									onChange={handleSortByChange}
+									label="Sort by"
+								>
+									<MenuItem value="NEXTBILLINGDATE">Next billing date</MenuItem>
+									<MenuItem value="NAME">Name</MenuItem>
+									<MenuItem value="STARTDATE">Start date</MenuItem>
+									<MenuItem value="COST">Cost</MenuItem>
+								</Select>
+							</FormControl>
 						</Grid>
 						{toDisplay.map((subscription, idx) => (
 							<Grid item xl={8} lg={8} md={8} sm={8} xs={12} key={idx}>
