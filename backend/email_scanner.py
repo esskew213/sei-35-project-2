@@ -14,13 +14,13 @@ import dateparser
 def get_message_subjects(user: User):
     credentials = get_and_refresh_credentials(user)
     service = build('gmail', 'v1', credentials=credentials)
-    latest_sync = get_last_synced(user_id=user.id)
-    if latest_sync:
-        search_str = f'after:{latest_sync} +subscribing OR +subscription (confirmation OR payment OR charge OR bill OR receipt) -newsletter  -"manage your" -"email preferences" -"unsubscribe from" -"discount" -"offer" -"been cancelled" -"been canceled" -"have canceled" -"have cancelled" -"will be cancelled"',
-        print(latest_sync)
-    else:
-        search_str = '+subscribing OR +subscription (confirmation OR payment OR charge OR bill OR receipt) -newsletter  -"manage your" -"email preferences" -"unsubscribe from" -"discount" -"offer" -"been cancelled" -"been canceled" -"have canceled" -"have cancelled" -"will be cancelled"',
-
+    # latest_sync = get_last_synced(user_id=user.id)
+    # if latest_sync:
+    #     search_str = f'after:{latest_sync} +subscribing OR +subscription (confirmation OR payment OR charge OR bill OR receipt) -newsletter  -"manage your" -"email preferences" -"unsubscribe from" -"discount" -"offer" -"been cancelled" -"been canceled" -"have canceled" -"have cancelled" -"will be cancelled"',
+    #     print(latest_sync)
+    # else:
+    #     search_str = '+subscribing OR +subscription (confirmation OR payment OR charge OR bill OR receipt) -newsletter  -"manage your" -"email preferences" -"unsubscribe from" -"discount" -"offer" -"been cancelled" -"been canceled" -"have canceled" -"have cancelled" -"will be cancelled"',
+    search_str = '{(subject:{+subscribing +subscription}) {+subscribing +subscription}}  {+price +order +cost +receipt +charge} -{newsletter} -(special AROUND offer) -"claim your offer" -"manage your preferences" -"manage your emails" -"manage your subscription" -"unsubscribe from" -"unsubscribe AROUND manage" -promotion -subject:{cancelled renew} '
 # Get the message ids of possible subscriptions
     try:
         response = service.users().messages().list(
@@ -40,7 +40,7 @@ def get_message_subjects(user: User):
             try:
                 message_body_encoded = message_payload["parts"][1]["body"]["data"]
                 message_padded = message_body_encoded + (4 - len(message_body_encoded) % 4)*'='
-                message_body_b64 = base64.urlsafe_b64decode(message_padded.encode('ascii'))
+                message_body_b64 = base64.urlsafe_b64decode(message_padded.encode('unicode-escape'))
                 message_body_html = message_body_b64.decode('unicode_escape')
                 message_info['message_html'] = message_body_html.replace('"', '&quot;')
 

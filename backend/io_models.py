@@ -33,21 +33,21 @@ class SubscriptionIOModel(BaseModel):
 
 def next_billing_date(date_started: date, recurs: RecursFreq) -> Optional[date]:
 
-    def to_relative_delta(delta: timedelta):
-        return relativedelta(
-            seconds=int(delta.total_seconds()),
-            microseconds=delta.microseconds
-        )
-
-    delta_since_started = to_relative_delta(date.today() - date_started)
+    delta_since_started = relativedelta(date.today(), date_started)
 
     if recurs is RecursFreq.NEVER:
         return None
     elif recurs is RecursFreq.WEEKLY:
-        delta_to_bill = relativedelta(weeks=(delta_since_started.weeks * (delta_since_started.years + 1) * (delta_since_started.months + 1) + 1))
+        delta_to_bill = relativedelta(
+            years=delta_since_started.years,
+            months=delta_since_started.months,
+            weeks=(delta_since_started.weeks + 1)
+        )
     elif recurs is RecursFreq.MONTHLY:
-        months = delta_since_started.months * (delta_since_started.years + 1) + 1
-        delta_to_bill = relativedelta(months=months)
+        delta_to_bill = relativedelta(
+            years=delta_since_started.years,
+            months=(delta_since_started.months + 1)
+        )
     elif recurs is RecursFreq.YEARLY:
         delta_to_bill = relativedelta(years=(delta_since_started.years + 1))
     else:
