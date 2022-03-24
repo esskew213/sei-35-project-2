@@ -32,9 +32,11 @@ const SubscriptionsList = () => {
 		const displayedSubsCopy = JSON.parse(JSON.stringify(displayedSubs));
 		switch (sortBy) {
 			case 'NEXTBILLINGDATE':
+				console.log('sorting by next billing date');
 				setDisplayedSubs(sortByBillingDate(displayedSubsCopy));
 				break;
 			case 'NAME':
+				console.log('sorting by name');
 				setDisplayedSubs(sortByName(displayedSubsCopy));
 				break;
 			case 'COST':
@@ -52,7 +54,7 @@ const SubscriptionsList = () => {
 			{isLoading ? (
 				<Loader />
 			) : toDisplay.length > 0 ? (
-				<Box sx={{ width: '60vw', maxWidth: '500px' }}>
+				<Box sx={{ width: '60vw', maxWidth: '550px' }}>
 					<Grid container rowSpacing={2} direction="column" justifyContent="flex-start" alignItems="center">
 						<Grid item sx={{ alignSelf: 'flex-end' }}>
 							<FormControl variant="filled" margin="dense" size="small" sx={{ minWidth: '100px' }}>

@@ -98,7 +98,7 @@ const DraftNewSub = ({
 								<iframe
 									sandbox={null}
 									width={400}
-									height={300}
+									height={400}
 									srcDoc={messageHtml}
 									title="message-display"
 								/>

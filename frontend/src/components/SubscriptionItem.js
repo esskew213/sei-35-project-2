@@ -35,7 +35,7 @@ const SubscriptionItem = ({ subscription }) => {
 			sx={{
 				width: '60vw',
 				boxSizing: 'border-box',
-				maxWidth: '500px',
+				maxWidth: '550px',
 				backgroundColor: '#F5F5F5',
 				padding: '0 2vw'
 			}}

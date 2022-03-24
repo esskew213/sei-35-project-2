@@ -1,9 +1,9 @@
 export const sortByBillingDate = (arr) => {
-	return arr.sort((a, b) => new Date(b.nextBillingDate) - new Date(a.nextBillingDate));
+	return arr.sort((a, b) => new Date(a.nextBillingDate) - new Date(b.nextBillingDate));
 };
 
 export const sortByDateStarted = (arr) => {
-	return arr.sort((a, b) => new Date(b.dateStarted) - new Date(a.dateStarted));
+	return arr.sort((a, b) => new Date(a.dateStarted) - new Date(b.dateStarted));
 };
 
 export const sortByName = (arr) => {
