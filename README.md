@@ -1,4 +1,4 @@
-# subSCRIBD
+# subSCRIBED
 ### Description
 Proof-of-concept for an app to help users find and track their subscriptions in one place. It uses the Gmail API to to extract emails related to subscriptions from the user's inbox. The information is stored in a database so that it persists across sessions.
 
@@ -17,8 +17,13 @@ Enter __subSCRIBED__, an app that allows users to accomplish the following:
 
 ____
 ### UI screenshots
+##### Sign in page
 ![subsCRIBED_signin](https://user-images.githubusercontent.com/99468700/160045675-6443b043-fb4f-4d74-a3d7-97bcf7a4acac.png)
+
+##### Scan results page — email previews in a popover wrapped around an iframe
 ![subSCRIBED_homepage](https://user-images.githubusercontent.com/99468700/160045769-4f61ddff-663d-4dd7-afd1-41d71dd5eb95.png)
+
+##### Homepage with subscriptions the user has added
 ![subSCRIBED_scanresults](https://user-images.githubusercontent.com/99468700/160045774-fce61260-5d7e-417b-a0c6-f2cf389fc29c.png)
 ____
 ### Technology and APIs used
