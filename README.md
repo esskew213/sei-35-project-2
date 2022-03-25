@@ -36,6 +36,8 @@ All three are running on local servers at the moment.
 #### Gmail and Google APIs
 I used the (very handy) [react-google-login](https://www.npmjs.com/package/react-google-login) to obtain each user's id token, which is then sent to the backend and decoded to be stored in the `User` database (yes, this is NOT safe practice!). The backend then uses the user id to check if our user's credentials already exist in the `GmailCredentials` table in our database; if not, a second credentials flow is triggered, this time to seek user's permission to let the app read their Gmail inbox. Upon completion of the flow, we store the credentials in our database and send back the user id to the frontend to store in local storage as the equivalent of a session token (also terrible practice — I'm still learning!). Every time the frontend makes a request to the backend, it sends across this user id/token as an Authorization header.
 
+In my Python backend, I used the `list` method of the [Gmail API](https://developers.google.com/gmail/api/reference/rest/v1/users.messages/get) with a customised search string to obtain the messages that might be related to subscriptions. I then used the `get` method to get more details about the message, including the `Subject` and `Date` information in the headers, and the (encoded) HTML of the main message body. I decoded the message HTML to Unicode Escape with `base64`; from there it was a simple matter to return the HTML to the frontend to render in the iframe.
+
 #### React and Material UI
 I used Material UI to style the app — the `Modal`, `Card` and `Form` components are such lifesavers! The `useEffect` hook also proved useful because most requests to the backend endpoints had to run when the component mounted (e.g. on the home page), or when a particular change was made (e.g. edits to subscription details). `useContext` allowed me to easily access and update the `subscriptions` state from each of the app's pages rather than having to lift state to the highest common ancestor.
 
@@ -43,7 +45,9 @@ Here's a diagrammatic representation of my frontend:
 ![seiproject2v2](https://user-images.githubusercontent.com/99468700/159905547-62b7131f-b8e2-4b97-8587-58ba7b7dbe6e.png)
 
 #### Pydantic, SQLAlchemy and PostgreSQL
-Pydantic was very useful for parsing and validating inputs / outputs in the backend. Separately, I also used SQLAlchemy's ORM to create tables for and perform CRUD operations on the PostgreSQL database. The database schema is shown here:
+Pydantic was very useful for parsing and validating inputs / outputs in the backend. I used [dateparser](https://dateparser.readthedocs.io/en/latest/) to help with calculation of the next billing date, as it handled the problem of different months having different numbers of days (not to mention leap years).
+
+Separately, I also used SQLAlchemy's ORM to create tables for and perform CRUD operations on the PostgreSQL database. The database schema is shown here:
 <img width="867" alt="db" src="https://user-images.githubusercontent.com/99468700/159868646-bbc8a16d-3a36-46f1-badd-18ed1f2e3fcb.png">
 
 ____
