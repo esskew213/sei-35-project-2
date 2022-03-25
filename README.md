@@ -16,6 +16,11 @@ Enter __subSCRIBED__, an app that allows users to accomplish the following:
 * Have the user confirm which of the retrieved messages are actually subscriptions, edit details as necessary, and finally save the subscriptions to the app.
 
 ____
+### UI screenshots
+![subsCRIBED_signin](https://user-images.githubusercontent.com/99468700/160045675-6443b043-fb4f-4d74-a3d7-97bcf7a4acac.png)
+![subSCRIBED_homepage](https://user-images.githubusercontent.com/99468700/160045769-4f61ddff-663d-4dd7-afd1-41d71dd5eb95.png)
+![subSCRIBED_scanresults](https://user-images.githubusercontent.com/99468700/160045774-fce61260-5d7e-417b-a0c6-f2cf389fc29c.png)
+____
 ### Technology and APIs used
 * Frontend: React (Javascript)
 * Backend: FastAPI (Python)
@@ -33,7 +38,7 @@ Here's a diagrammatic representation of my frontend:
 ![seiproject2v2](https://user-images.githubusercontent.com/99468700/159905547-62b7131f-b8e2-4b97-8587-58ba7b7dbe6e.png)
 
 #### Pydantic, SQLAlchemy and PostgreSQL
-Pydantic was very useful for parsing and validating inputs / outputs in the backend. Separately, I also used SQLAlchemy's ORM to create tables for and perform CRUD operations on the PostgreSQL database. The ERD is shown here:
+Pydantic was very useful for parsing and validating inputs / outputs in the backend. Separately, I also used SQLAlchemy's ORM to create tables for and perform CRUD operations on the PostgreSQL database. The database schema is shown here:
 <img width="867" alt="db" src="https://user-images.githubusercontent.com/99468700/159868646-bbc8a16d-3a36-46f1-badd-18ed1f2e3fcb.png">
 
 ____
@@ -43,3 +48,4 @@ Working with Google's APIs and learning about authorisation and authentication w
 I'd also like to refactor the code for the React frontend, creating more reusable components and custom hooks / functions to prevent components from getting bloated. And I'd definitely like to incorporate more error handling — for instance, catching errors from any API request failure.
 
 Finally, more work could be done to improve the accuracy of the app's identification of actual subscriptions based on emails in the user's Gmail inbox. That might involve some machine learning model — outside of the scope of this project. ;)
+
