@@ -33,6 +33,8 @@ ____
 
 All three are running on local servers at the moment.
 
+![architecture diagram](https://user-images.githubusercontent.com/99468700/172693645-4d623611-d3b1-4fa1-8c52-4a332ca66f85.png)
+
 #### Gmail and Google APIs
 I used the (very handy) [react-google-login](https://www.npmjs.com/package/react-google-login) to obtain each user's id token, which is then sent to the backend and decoded to be stored in the `User` database (yes, this is NOT safe practice!). The backend then uses the user id to check if our user's credentials already exist in the `GmailCredentials` table in our database; if not, a second credentials flow is triggered, this time to seek user's permission to let the app read their Gmail inbox. Upon completion of the flow, we store the credentials in our database and send back the user id to the frontend to store in local storage as the equivalent of a session token (also terrible practice — I'm still learning!). Every time the frontend makes a request to the backend, it sends across this user id/token as an Authorization header.
 
