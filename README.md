@@ -20,6 +20,9 @@ ____
 ##### Sign in page
 ![subsCRIBED_signin](https://user-images.githubusercontent.com/99468700/160045675-6443b043-fb4f-4d74-a3d7-97bcf7a4acac.png)
 
+##### Video of authentication flow
+https://user-images.githubusercontent.com/99468700/172887275-cdd807fc-3b91-4933-8ea8-aa425671ecec.mov
+
 ##### Scan results page — email previews in a popover wrapped around an iframe
 ![subSCRIBED_homepage](https://user-images.githubusercontent.com/99468700/160045769-4f61ddff-663d-4dd7-afd1-41d71dd5eb95.png)
 
