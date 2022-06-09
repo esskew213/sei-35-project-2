@@ -49,6 +49,10 @@ Here's a diagrammatic representation of my frontend:
 #### Pydantic, SQLAlchemy and PostgreSQL
 Pydantic was very useful for parsing and validating inputs / outputs in the backend. I used [dateparser](https://dateparser.readthedocs.io/en/latest/) to help with calculation of the next billing date, as it handled the problem of different months having different numbers of days (not to mention leap years).
 
+
+##### Example of using Pydantic
+<img width="533" alt="Screenshot 2022-06-08 at 6 52 27 PM" src="https://user-images.githubusercontent.com/99468700/172828369-72b4b02f-19c5-456e-9d1b-20efe68f3cd3.png">
+
 Separately, I also used SQLAlchemy's ORM to create tables for and perform CRUD operations on the PostgreSQL database. The database schema is shown here:
 <img width="867" alt="db" src="https://user-images.githubusercontent.com/99468700/159868646-bbc8a16d-3a36-46f1-badd-18ed1f2e3fcb.png">
 
